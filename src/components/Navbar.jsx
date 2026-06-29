@@ -7,7 +7,7 @@ const navLinks = [
     { label: 'Why Us', href: '#why-us' },
     { label: 'Process', href: '#process' },
     { label: 'Reports', href: '#reports' },
-    { label: 'Testimonials', href: '#testimonials' },
+    { label: 'FAQ', href: '#faq' },
     { label: 'Contact', href: '#contact' },
 ]
 
@@ -33,21 +33,21 @@ export default function Navbar() {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-strong shadow-lg shadow-black/20 py-3' : 'py-5 bg-transparent'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-strong py-3' : 'py-5 bg-transparent'
                 }`}
         >
-            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between">
                 {/* Logo */}
                 <a href="#" className="flex items-center gap-3 group">
                     <div className="relative w-9 h-9">
-                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity blur-sm" />
-                        <div className="relative w-9 h-9 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center">
+                        <div className="absolute inset-0 btn-primary rounded-lg opacity-25 group-hover:opacity-40 transition-opacity blur-sm" />
+                        <div className="relative w-9 h-9 btn-primary rounded-lg flex items-center justify-center">
                             <Shield size={18} className="text-white" />
                         </div>
                     </div>
                     <div>
-                        <span className="text-white font-bold text-lg tracking-tight">CipherGuard</span>
-                        <span className="text-xs text-cyan-400 block leading-none -mt-0.5 tracking-widest uppercase">Security</span>
+                        <span className="font-bold text-lg tracking-tight" style={{ color: 'var(--color-text)' }}>CipherGuard</span>
+                        <span className="text-xs block leading-none -mt-0.5 tracking-widest uppercase" style={{ color: 'var(--color-primary-deep)' }}>Security</span>
                     </div>
                 </a>
 
@@ -57,17 +57,21 @@ export default function Navbar() {
                         <div key={link.label} className="relative group">
                             {link.hasDropdown ? (
                                 <button
-                                    className="flex items-center gap-1 px-4 py-2 text-sm text-gray-300 hover:text-cyan-400 transition-colors rounded-lg hover:bg-white/5"
+                                    className="flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-lg hover:bg-[rgba(234,88,12,0.08)]"
+                                    style={{ color: 'var(--color-text-soft)' }}
                                     onMouseEnter={() => setDropdownOpen(true)}
                                     onMouseLeave={() => setDropdownOpen(false)}
                                 >
                                     {link.label}
-                                    <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+                                    <ChevronDown size={14} className="transition-transform group-hover:rotate-180" style={{ color: 'var(--color-primary)' }} />
                                 </button>
                             ) : (
                                 <a
                                     href={link.href}
-                                    className="px-4 py-2 text-sm text-gray-300 hover:text-cyan-400 transition-colors rounded-lg hover:bg-white/5 block"
+                                    className="px-4 py-2 text-sm transition-colors rounded-lg hover:bg-[rgba(234,88,12,0.08)] block"
+                                    style={{ color: 'var(--color-text-soft)' }}
+                                    onMouseEnter={(e) => e.target.style.color = 'var(--color-primary-deep)'}
+                                    onMouseLeave={(e) => e.target.style.color = 'var(--color-text-soft)'}
                                 >
                                     {link.label}
                                 </a>
@@ -81,7 +85,7 @@ export default function Navbar() {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: 10 }}
                                             transition={{ duration: 0.2 }}
-                                            className="absolute top-full left-0 mt-2 w-64 glass-strong rounded-xl p-2 shadow-xl shadow-black/30"
+                                            className="absolute top-full left-0 mt-2 w-64 glass-strong rounded-xl p-2"
                                             onMouseEnter={() => setDropdownOpen(true)}
                                             onMouseLeave={() => setDropdownOpen(false)}
                                         >
@@ -89,7 +93,8 @@ export default function Navbar() {
                                                 <a
                                                     key={s}
                                                     href="#services"
-                                                    className="block px-3 py-2 text-sm text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors"
+                                                    className="block px-3 py-2 text-sm rounded-lg transition-colors hover:bg-[rgba(234,88,12,0.08)]"
+                                                    style={{ color: 'var(--color-text-soft)' }}
                                                 >
                                                     {s}
                                                 </a>
@@ -106,23 +111,23 @@ export default function Navbar() {
                 <div className="hidden lg:flex items-center gap-3">
                     <a
                         href="#contact"
-                        className="px-4 py-2 text-sm text-gray-300 hover:text-white transition-colors"
+                        className="px-4 py-2 text-sm transition-colors"
+                        style={{ color: 'var(--color-text-soft)' }}
                     >
                         Get in Touch
                     </a>
                     <a
                         href="#contact"
-                        className="relative px-5 py-2.5 text-sm font-semibold rounded-xl overflow-hidden group"
+                        className="relative px-5 py-2.5 text-sm font-semibold rounded-xl overflow-hidden text-white btn-primary"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 transition-opacity" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <span className="relative text-white">Book Consultation</span>
+                        <span className="relative">Book Consultation</span>
                     </a>
                 </div>
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="lg:hidden text-gray-300 hover:text-white transition-colors"
+                    className="lg:hidden transition-colors"
+                    style={{ color: 'var(--color-text)' }}
                     onClick={() => setMobileOpen(!mobileOpen)}
                     aria-label="Toggle menu"
                 >
@@ -137,23 +142,25 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="lg:hidden glass-strong border-t border-white/5 overflow-hidden"
+                        className="lg:hidden glass-strong border-t overflow-hidden"
+                        style={{ borderColor: 'var(--color-border)' }}
                     >
-                        <div className="px-6 py-4 space-y-1">
+                        <div className="px-5 sm:px-6 py-4 space-y-1">
                             {navLinks.map((link) => (
                                 <a
                                     key={link.label}
                                     href={link.href}
-                                    className="block px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-xl transition-colors"
+                                    className="block px-4 py-3 rounded-xl transition-colors hover:bg-[rgba(234,88,12,0.08)]"
+                                    style={{ color: 'var(--color-text)' }}
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     {link.label}
                                 </a>
                             ))}
-                            <div className="pt-3 border-t border-white/5">
+                            <div className="pt-3 border-t" style={{ borderColor: 'var(--color-border)' }}>
                                 <a
                                     href="#contact"
-                                    className="block w-full text-center px-5 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl text-white font-semibold"
+                                    className="block w-full text-center px-5 py-3 btn-primary rounded-xl text-white font-semibold"
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     Book Free Consultation

@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Play, Terminal, AlertTriangle, Shield, CheckCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Play, AlertTriangle, Shield, CheckCircle } from 'lucide-react'
+
+const ORANGE = '#EA580C'
+const RUST = '#B45309'
+const AMBER = '#F59E0B'
+const DEEP = '#C2410C'
 
 const stages = [
     {
-        id: 'recon', label: 'Reconnaissance', icon: '🔍', color: '#00D4FF',
+        id: 'recon', label: 'Reconnaissance', icon: '🔍', color: ORANGE,
         duration: 1200,
         logs: [
             '> Initiating passive reconnaissance...',
@@ -15,7 +20,7 @@ const stages = [
         ]
     },
     {
-        id: 'portscan', label: 'Port Scanning', icon: '📡', color: '#7C3AED',
+        id: 'portscan', label: 'Port Scanning', icon: '📡', color: RUST,
         duration: 1000,
         logs: [
             '> nmap -sS -sV -O --script=default target',
@@ -26,7 +31,7 @@ const stages = [
         ]
     },
     {
-        id: 'enum', label: 'Enumeration', icon: '📋', color: '#00FFC8',
+        id: 'enum', label: 'Enumeration', icon: '📋', color: AMBER,
         duration: 1100,
         logs: [
             '> Directory brute-force: /admin, /backup, /api/v1',
@@ -37,7 +42,7 @@ const stages = [
         ]
     },
     {
-        id: 'vuln', label: 'Vulnerability Discovery', icon: '🎯', color: '#FF6B35',
+        id: 'vuln', label: 'Vulnerability Discovery', icon: '🎯', color: DEEP,
         duration: 1300,
         logs: [
             '> SQL Injection: /api/users?id=1 [CRITICAL]',
@@ -48,7 +53,7 @@ const stages = [
         ]
     },
     {
-        id: 'exploit', label: 'Exploitation', icon: '⚡', color: '#EF4444',
+        id: 'exploit', label: 'Exploitation', icon: '⚡', color: DEEP,
         duration: 1400,
         logs: [
             '> Exploiting SQL injection via UNION attack...',
@@ -59,7 +64,7 @@ const stages = [
         ]
     },
     {
-        id: 'privesc', label: 'Privilege Escalation', icon: '🔑', color: '#EF4444',
+        id: 'privesc', label: 'Privilege Escalation', icon: '🔑', color: DEEP,
         duration: 1000,
         logs: [
             '> Shell obtained via webshell upload',
@@ -70,7 +75,7 @@ const stages = [
         ]
     },
     {
-        id: 'impact', label: 'Business Impact', icon: '💥', color: '#F59E0B',
+        id: 'impact', label: 'Business Impact', icon: '💥', color: AMBER,
         duration: 900,
         logs: [
             '> Customer PII accessible — GDPR breach risk',
@@ -81,7 +86,7 @@ const stages = [
         ]
     },
     {
-        id: 'detect', label: 'Detection', icon: '🔔', color: '#00D4FF',
+        id: 'detect', label: 'Detection', icon: '🔔', color: ORANGE,
         duration: 800,
         logs: [
             '> Simulating security monitoring analysis...',
@@ -92,7 +97,7 @@ const stages = [
         ]
     },
     {
-        id: 'mitigate', label: 'Mitigation Report', icon: '🛡️', color: '#00FFC8',
+        id: 'mitigate', label: 'Mitigation Report', icon: '🛡️', color: RUST,
         duration: 1000,
         logs: [
             '> Parameterized queries eliminate SQL injection',
@@ -104,46 +109,57 @@ const stages = [
     },
 ]
 
-function Terminal_({ logs, active }) {
+function TerminalView({ logs, active }) {
     const endRef = useRef(null)
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [logs])
 
     return (
-        <div className="glass-strong rounded-xl p-4 font-mono text-xs h-48 overflow-auto">
-            <div className="flex items-center gap-2 mb-3 pb-3 border-b border-white/5">
-                <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                <span className="text-gray-500 text-xs ml-2">attack-simulation@cipherguard:~$</span>
+        <div className="rounded-xl overflow-hidden" style={{ background: '#1A0F06', border: `1px solid rgba(234,88,12,0.2)` }}>
+            {/* Terminal header */}
+            <div className="flex items-center gap-2 px-4 py-2.5" style={{ background: '#2A1B0E', borderBottom: '1px solid rgba(234,88,12,0.15)' }}>
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: DEEP }} />
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: AMBER }} />
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: RUST }} />
+                <span className="ml-2 font-mono text-xs" style={{ color: 'rgba(245,158,11,0.7)' }}>attack-simulation@cipherguard:~$</span>
             </div>
-            {logs.map((log, i) => (
-                <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.15 }}
-                    className={`mb-1 ${log.includes('CRITICAL') ? 'text-red-400' :
-                            log.includes('HIGH') ? 'text-orange-400' :
-                                log.includes('ROOT') || log.includes('compromised') ? 'text-red-400' :
-                                    log.includes('✓') || log.includes('eliminated') || log.includes('deployed') ? 'text-green-400' :
-                                        'text-gray-400'
-                        }`}
-                >
-                    {log}
-                </motion.div>
-            ))}
-            {active && (
-                <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8 }}
-                    className="text-cyan-400"
-                >
-                    ▊
-                </motion.span>
-            )}
-            <div ref={endRef} />
+            {/* Logs */}
+            <div className="p-4 font-mono text-xs h-48 overflow-auto" style={{ color: 'rgba(251,247,240,0.75)' }}>
+                {logs.map((log, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.15 }}
+                        className={`mb-1 ${
+                            log.includes('CRITICAL') ? 'font-bold' :
+                            log.includes('HIGH') ? '' :
+                            log.includes('ROOT') || log.includes('compromised') ? 'font-bold' :
+                            log.includes('✓') || log.includes('eliminated') || log.includes('deployed') ? '' :
+                            ''}`}
+                        style={{
+                            color: log.includes('CRITICAL') ? '#EF4444' :
+                                log.includes('HIGH') ? ORANGE :
+                                log.includes('ROOT') || log.includes('compromised') ? '#EF4444' :
+                                log.includes('✓') || log.includes('eliminated') || log.includes('deployed') ? AMBER :
+                                'rgba(251,247,240,0.6)'
+                        }}
+                    >
+                        {log}
+                    </motion.div>
+                ))}
+                {active && (
+                    <motion.span
+                        animate={{ opacity: [1, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        style={{ color: ORANGE }}
+                    >
+                        ▊
+                    </motion.span>
+                )}
+                <div ref={endRef} />
+            </div>
         </div>
     )
 }
@@ -165,7 +181,6 @@ export default function AttackSimulation() {
             setCurrentStage(i)
             setLogs([])
 
-            // Add logs one by one
             for (let j = 0; j < stages[i].logs.length; j++) {
                 await new Promise(r => setTimeout(r, stages[i].duration / stages[i].logs.length))
                 setLogs(prev => [...prev, stages[i].logs[j]])
@@ -180,61 +195,62 @@ export default function AttackSimulation() {
     }
 
     return (
-        <section id="simulation" className="py-24 bg-[#030712] relative overflow-hidden">
-            <div className="absolute inset-0 cyber-grid opacity-20" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/3 rounded-full blur-3xl" />
+        <section id="simulation" className="py-20 md:py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--color-bg)' }}>
+            <div className="absolute inset-0 cyber-grid opacity-30" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl pointer-events-none"
+                style={{ background: 'rgba(234, 88, 12, 0.05)' }} />
 
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-7xl mx-auto px-5 sm:px-6">
                 {/* Header */}
                 <motion.div
-                    className="text-center mb-16"
+                    className="text-center mb-14"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full border border-orange-400/20 mb-6">
-                        <AlertTriangle size={12} className="text-orange-400" />
-                        <span className="text-xs text-orange-400 uppercase tracking-widest">Educational Only</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full mb-6"
+                        style={{ borderColor: 'rgba(234,88,12,0.25)' }}>
+                        <AlertTriangle size={12} style={{ color: ORANGE }} />
+                        <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: 'var(--color-primary-deep)' }}>Educational Only</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight" style={{ color: 'var(--color-text)' }}>
                         Interactive Attack<br />
                         <span className="gradient-text">Simulation</span>
                     </h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
+                    <p className="max-w-2xl mx-auto" style={{ color: 'var(--color-text-soft)' }}>
                         Watch how a real penetration test unfolds — from reconnaissance to mitigation.
                         This is exactly what we do to protect your business.
                     </p>
                 </motion.div>
 
-                <div className="grid lg:grid-cols-2 gap-8 items-start">
+                <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 items-start">
                     {/* Stages Timeline */}
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                         {stages.map((stage, i) => {
                             const isActive = currentStage === i
                             const isDone = completedStages.includes(i)
-                            const isPending = !isActive && !isDone
 
                             return (
                                 <motion.div
                                     key={stage.id}
-                                    initial={{ opacity: 0, x: -30 }}
+                                    initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: i * 0.06 }}
-                                    className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-500 ${isActive
-                                            ? 'glass border-white/15 shadow-lg'
-                                            : isDone
-                                                ? 'glass border-white/5'
-                                                : 'border-transparent opacity-50'
-                                        }`}
-                                    style={isActive ? { borderColor: `${stage.color}40`, boxShadow: `0 0 20px ${stage.color}10` } : {}}
+                                    transition={{ delay: i * 0.04 }}
+                                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-500"
+                                    style={{
+                                        background: isActive ? 'var(--color-card-tint)' : 'transparent',
+                                        border: `1px solid ${isActive ? `${stage.color}35` : isDone ? 'var(--color-border)' : 'transparent'}`,
+                                        boxShadow: isActive ? `0 0 20px ${stage.color}10` : 'none',
+                                        opacity: (!isActive && !isDone) ? 0.5 : 1,
+                                    }}
                                 >
-                                    {/* Step number/icon */}
+                                    {/* Step icon */}
                                     <div
                                         className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0 transition-all duration-300"
                                         style={{
-                                            background: isDone || isActive ? `${stage.color}15` : 'rgba(255,255,255,0.03)',
-                                            border: `1px solid ${isDone || isActive ? stage.color + '30' : 'rgba(255,255,255,0.05)'}`,
+                                            background: isDone || isActive ? `${stage.color}15` : 'rgba(74,44,18,0.05)',
+                                            border: `1px solid ${isDone || isActive ? stage.color + '35' : 'var(--color-border)'}`,
                                         }}
                                     >
                                         {isDone ? (
@@ -255,11 +271,11 @@ export default function AttackSimulation() {
                                         <div className="flex items-center justify-between">
                                             <span
                                                 className="font-semibold text-sm"
-                                                style={{ color: isDone || isActive ? stage.color : '#6b7280' }}
+                                                style={{ color: isDone || isActive ? stage.color : 'var(--color-text-faint)' }}
                                             >
                                                 {stage.label}
                                             </span>
-                                            <span className="text-xs text-gray-600">{String(i + 1).padStart(2, '0')}</span>
+                                            <span className="text-xs" style={{ color: 'var(--color-text-faint)' }}>{String(i + 1).padStart(2, '0')}</span>
                                         </div>
                                         {isActive && (
                                             <motion.div
@@ -278,7 +294,7 @@ export default function AttackSimulation() {
 
                     {/* Terminal & Controls */}
                     <div className="sticky top-24 space-y-4">
-                        <Terminal_ logs={logs} active={running} />
+                        <TerminalView logs={logs} active={running} />
 
                         {currentStage >= 0 && currentStage < stages.length && (
                             <motion.div
@@ -292,10 +308,10 @@ export default function AttackSimulation() {
                                         className="w-2 h-2 rounded-full animate-pulse-glow"
                                         style={{ background: stages[currentStage].color }}
                                     />
-                                    <span className="text-sm font-semibold text-white">
+                                    <span className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>
                                         Stage {currentStage + 1}: {stages[currentStage].label}
                                     </span>
-                                    <span className="text-xs text-gray-500 ml-auto">Running...</span>
+                                    <span className="text-xs ml-auto" style={{ color: 'var(--color-text-faint)' }}>Running...</span>
                                 </div>
                             </motion.div>
                         )}
@@ -304,16 +320,17 @@ export default function AttackSimulation() {
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="glass-strong rounded-xl p-6 text-center border border-cyan-400/20"
+                                className="glass-strong rounded-xl p-6 text-center"
+                                style={{ borderColor: 'rgba(234,88,12,0.25)' }}
                             >
-                                <Shield size={32} className="text-cyan-400 mx-auto mb-3" />
-                                <h3 className="text-white font-bold text-lg mb-2">Simulation Complete</h3>
-                                <p className="text-gray-400 text-sm mb-4">
+                                <Shield size={32} style={{ color: ORANGE }} className="mx-auto mb-3" />
+                                <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--color-text)' }}>Simulation Complete</h3>
+                                <p className="text-sm mb-4" style={{ color: 'var(--color-text-soft)' }}>
                                     We found 8 critical vulnerabilities. This is why proactive security testing is essential.
                                 </p>
                                 <a
                                     href="#contact"
-                                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl text-white text-sm font-semibold"
+                                    className="inline-flex items-center gap-2 px-6 py-3 btn-primary rounded-xl text-white text-sm font-semibold"
                                 >
                                     Protect My Business
                                 </a>
@@ -326,9 +343,10 @@ export default function AttackSimulation() {
                                 className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-semibold text-white relative overflow-hidden group"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
+                                style={{ background: `linear-gradient(135deg, ${DEEP}, ${ORANGE})` }}
                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-500" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    style={{ background: `linear-gradient(135deg, ${ORANGE}, ${RUST})` }} />
                                 <Play size={18} className="relative" />
                                 <span className="relative">Launch Simulation</span>
                             </motion.button>
@@ -337,7 +355,8 @@ export default function AttackSimulation() {
                         {!running && completedStages.length === stages.length && (
                             <button
                                 onClick={() => { setCompletedStages([]); setCurrentStage(-1); setLogs([]) }}
-                                className="w-full py-3 glass rounded-xl text-gray-400 text-sm hover:text-white transition-colors border border-white/5"
+                                className="w-full py-3 glass rounded-xl text-sm transition-colors"
+                                style={{ color: 'var(--color-text-soft)' }}
                             >
                                 Reset Simulation
                             </button>

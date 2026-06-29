@@ -8,97 +8,97 @@ import {
 
 const services = [
     {
-        icon: Globe, title: 'Web Application VAPT', color: '#00D4FF',
+        icon: Globe, title: 'Web Application VAPT', color: '#EA580C',
         short: 'Comprehensive web security testing following OWASP Top 10 and beyond.',
         details: 'Full black-box, grey-box and white-box testing. SQL injection, XSS, CSRF, IDOR, broken auth, business logic flaws, and 150+ vulnerability checks. Detailed proof-of-concept for every finding.',
         tags: ['OWASP Top 10', 'SANS 25', 'CVSSv3']
     },
     {
-        icon: Smartphone, title: 'Mobile Application VAPT', color: '#7C3AED',
+        icon: Smartphone, title: 'Mobile Application VAPT', color: '#B45309',
         short: 'iOS and Android security testing — static, dynamic, and network analysis.',
         details: 'OWASP MASVS-compliant testing covering insecure data storage, improper auth, code tampering, reverse engineering, traffic interception, and backend API testing.',
         tags: ['iOS', 'Android', 'OWASP MASVS']
     },
     {
-        icon: Code2, title: 'API Security Testing', color: '#00FFC8',
+        icon: Code2, title: 'API Security Testing', color: '#F59E0B',
         short: 'REST, GraphQL, SOAP — full API attack surface coverage.',
         details: 'Authentication bypass, authorization flaws, excessive data exposure, injection flaws, rate limiting issues, schema validation, and mass assignment vulnerabilities tested systematically.',
         tags: ['REST', 'GraphQL', 'SOAP', 'gRPC']
     },
     {
-        icon: Cloud, title: 'Cloud Security Assessment', color: '#00D4FF',
+        icon: Cloud, title: 'Cloud Security Assessment', color: '#EA580C',
         short: 'AWS, Azure, GCP misconfiguration review and hardening.',
         details: 'IAM policy review, S3/Blob/GCS exposure, VPC security, Kubernetes hardening, serverless security, secrets management, logging/monitoring gaps, and CIS benchmark compliance.',
         tags: ['AWS', 'Azure', 'GCP', 'CIS Benchmark']
     },
     {
-        icon: Network, title: 'Network Penetration Testing', color: '#7C3AED',
+        icon: Network, title: 'Network Penetration Testing', color: '#B45309',
         short: 'Internal and external network penetration testing.',
         details: 'Network enumeration, service exploitation, man-in-the-middle attacks, firewall bypass, VPN security, segmentation testing, and lateral movement simulation.',
         tags: ['Internal', 'External', 'Segmentation']
     },
     {
-        icon: Wifi, title: 'Wireless Security Assessment', color: '#00FFC8',
+        icon: Wifi, title: 'Wireless Security Assessment', color: '#F59E0B',
         short: 'Wi-Fi network security testing and rogue AP detection.',
         details: 'WPA2/WPA3 testing, evil twin attacks, PMKID cracking, captive portal bypasses, enterprise Wi-Fi (802.1x) testing, rogue access point detection.',
         tags: ['WPA2', 'WPA3', '802.1x']
     },
     {
-        icon: Server, title: 'Infrastructure Assessment', color: '#00D4FF',
+        icon: Server, title: 'Infrastructure Assessment', color: '#EA580C',
         short: 'Server hardening review and vulnerability scanning.',
         details: 'OS hardening, patch management gaps, exposed services, privilege escalation paths, default credentials, configuration drift, and compliance mapping.',
         tags: ['CIS Benchmark', 'NIST', 'ISO 27001']
     },
     {
-        icon: Settings, title: 'Configuration Review', color: '#7C3AED',
+        icon: Settings, title: 'Configuration Review', color: '#B45309',
         short: 'Secure baseline configuration audits for all platforms.',
         details: 'Firewall rule review, router/switch hardening, database configuration, web server hardening (Apache/Nginx/IIS), application server tuning.',
         tags: ['Firewall', 'Database', 'Web Server']
     },
     {
-        icon: FileCode, title: 'Source Code Review', color: '#00FFC8',
+        icon: FileCode, title: 'Source Code Review', color: '#F59E0B',
         short: 'Manual + automated SAST for your entire codebase.',
         details: 'Line-by-line manual code review combined with automated SAST tooling. Covers hardcoded secrets, SQL injection, crypto issues, dependency vulnerabilities, and logic flaws.',
         tags: ['SAST', 'DAST', 'SCA']
     },
     {
-        icon: Target, title: 'Red Team Assessment', color: '#00D4FF',
+        icon: Target, title: 'Red Team Assessment', color: '#EA580C',
         short: 'Full adversary simulation — people, process, technology.',
         details: 'Multi-vector attack simulation targeting physical, digital, and human elements. MITRE ATT&CK-mapped TTPs, C2 infrastructure, persistence, exfiltration simulation.',
         tags: ['MITRE ATT&CK', 'APT Simulation', 'C2']
     },
     {
-        icon: Mail, title: 'Phishing Simulation', color: '#7C3AED',
+        icon: Mail, title: 'Phishing Simulation', color: '#B45309',
         short: 'Realistic phishing campaigns to test employee awareness.',
         details: 'Spear phishing, vishing, smishing campaigns with detailed analytics. Employee click rates, credential harvesting awareness, training recommendations, and repeat testing.',
         tags: ['Email', 'SMS', 'Voice']
     },
     {
-        icon: Shield, title: 'ISO 27001 Readiness', color: '#00FFC8',
+        icon: Shield, title: 'ISO 27001 Readiness', color: '#F59E0B',
         short: 'Gap assessment and remediation roadmap for ISO 27001.',
         details: 'Full ISMS gap analysis, risk assessment, policy review, control mapping, and implementation roadmap. Prepare for certification audits with confidence.',
         tags: ['Gap Analysis', 'Risk Assessment', 'ISMS']
     },
     {
-        icon: Lock, title: 'SOC 2 Readiness', color: '#00D4FF',
+        icon: Lock, title: 'SOC 2 Readiness', color: '#EA580C',
         short: 'SOC 2 Type I & II preparation and evidence collection.',
         details: 'Trust Service Criteria mapping, control implementation guidance, evidence collection framework, vendor assessment, and auditor liaison support.',
         tags: ['Type I', 'Type II', 'TSC']
     },
     {
-        icon: CreditCard, title: 'PCI DSS Assessment', color: '#7C3AED',
+        icon: CreditCard, title: 'PCI DSS Assessment', color: '#B45309',
         short: 'Cardholder data environment scoping and compliance.',
         details: 'CDE scoping, SAQ guidance, network segmentation validation, penetration testing per PCI DSS requirement 11.3, and remediation support.',
         tags: ['PCI DSS v4.0', 'SAQ', 'QSA']
     },
     {
-        icon: Eye, title: 'External Attack Surface', color: '#00FFC8',
+        icon: Eye, title: 'External Attack Surface', color: '#F59E0B',
         short: 'Discover your exposed assets before attackers do.',
         details: 'Subdomain enumeration, exposed services discovery, leaked credentials, dark web monitoring, SSL certificate analysis, and continuous attack surface monitoring.',
         tags: ['OSINT', 'Recon', 'ASM']
     },
     {
-        icon: Database, title: 'Active Directory Review', color: '#00D4FF',
+        icon: Database, title: 'Active Directory Review', color: '#EA580C',
         short: 'AD misconfiguration, privilege escalation, and BloodHound analysis.',
         details: 'BloodHound/SharpHound enumeration, Kerberoasting, AS-REP roasting, pass-the-hash, DCSync, ACL abuse, GPO misconfigurations, and tier-0 asset protection.',
         tags: ['BloodHound', 'Kerberos', 'LDAP']
@@ -119,44 +119,44 @@ function ServiceCard({ service, index }) {
             className="group relative"
         >
             <div
-                className="glass rounded-2xl p-6 h-full cursor-pointer transition-all duration-300 hover:border-white/10"
+                className="glass rounded-2xl p-6 h-full cursor-pointer transition-all duration-300 hover:shadow-lg"
                 style={{
-                    borderColor: expanded ? `${service.color}30` : 'transparent',
+                    borderColor: expanded ? `${service.color}40` : 'var(--color-border)',
                     border: '1px solid',
                 }}
                 onClick={() => setExpanded(!expanded)}
             >
                 {/* Glow effect */}
                 <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                     style={{
-                        background: `radial-gradient(circle at 50% 0%, ${service.color}08 0%, transparent 70%)`
+                        background: `radial-gradient(circle at 50% 0%, ${service.color}12 0%, transparent 70%)`
                     }}
                 />
 
                 {/* Icon */}
                 <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300"
-                    style={{ background: `${service.color}15`, border: `1px solid ${service.color}25` }}
+                    style={{ background: `${service.color}18`, border: `1px solid ${service.color}30` }}
                 >
                     <Icon size={22} style={{ color: service.color }} />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-cyan-400 transition-colors">
+                <h3 className="font-semibold text-lg mb-2 transition-colors" style={{ color: 'var(--color-text)' }}>
                     {service.title}
                 </h3>
 
                 {/* Short desc */}
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">{service.short}</p>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-text-soft)' }}>{service.short}</p>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
                     {service.tags.map((tag) => (
                         <span
                             key={tag}
-                            className="px-2 py-0.5 rounded text-xs font-medium"
-                            style={{ background: `${service.color}10`, color: service.color }}
+                            className="px-2 py-0.5 rounded text-xs font-semibold"
+                            style={{ background: `${service.color}15`, color: service.color }}
                         >
                             {tag}
                         </span>
@@ -164,11 +164,13 @@ function ServiceCard({ service, index }) {
                 </div>
 
                 {/* Expand button */}
-                <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-cyan-400 transition-colors">
+                <button className="flex items-center gap-1 text-xs font-medium transition-colors"
+                    style={{ color: 'var(--color-text-faint)' }}>
                     <span>{expanded ? 'Show less' : 'Learn more'}</span>
                     <ChevronDown
                         size={12}
                         className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
+                        style={{ color: 'var(--color-primary)' }}
                     />
                 </button>
 
@@ -182,11 +184,11 @@ function ServiceCard({ service, index }) {
                             transition={{ duration: 0.3 }}
                             className="overflow-hidden"
                         >
-                            <div className="pt-4 mt-4 border-t border-white/5">
-                                <p className="text-sm text-gray-400 leading-relaxed">{service.details}</p>
+                            <div className="pt-4 mt-4" style={{ borderTop: '1px solid var(--color-border)' }}>
+                                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-soft)' }}>{service.details}</p>
                                 <a
                                     href="#contact"
-                                    className="inline-flex items-center gap-2 mt-4 text-sm font-medium transition-colors"
+                                    className="inline-flex items-center gap-2 mt-4 text-sm font-semibold transition-colors"
                                     style={{ color: service.color }}
                                     onClick={(e) => e.stopPropagation()}
                                 >
@@ -203,36 +205,38 @@ function ServiceCard({ service, index }) {
 
 export default function Services() {
     return (
-        <section id="services" className="py-24 bg-[#030712] relative">
+        <section id="services" className="py-20 md:py-24 relative" style={{ backgroundColor: 'var(--color-bg-soft)' }}>
             {/* Background */}
-            <div className="absolute inset-0 cyber-grid opacity-20" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-purple-600/5 rounded-full blur-3xl" />
+            <div className="absolute inset-0 cyber-grid opacity-30" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full blur-3xl pointer-events-none"
+                style={{ background: 'rgba(234, 88, 12, 0.05)' }} />
 
-            <div className="max-w-7xl mx-auto px-6 relative">
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 relative">
                 {/* Header */}
                 <motion.div
-                    className="text-center mb-16"
+                    className="text-center mb-14"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.7 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full border border-cyan-400/20 mb-6">
-                        <Shield size={12} className="text-cyan-400" />
-                        <span className="text-xs text-cyan-400 uppercase tracking-widest">Security Services</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full mb-6"
+                        style={{ borderColor: 'rgba(234,88,12,0.25)' }}>
+                        <Shield size={12} style={{ color: '#EA580C' }} />
+                        <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: 'var(--color-primary-deep)' }}>Security Services</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight" style={{ color: 'var(--color-text)' }}>
                         Comprehensive Security<br />
                         <span className="gradient-text">Testing & Compliance</span>
                     </h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
+                    <p className="max-w-2xl mx-auto" style={{ color: 'var(--color-text-soft)' }}>
                         From web apps to cloud infrastructure, we cover every attack surface
                         with manual expertise and cutting-edge tooling.
                     </p>
                 </motion.div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {services.map((service, i) => (
                         <ServiceCard key={service.title} service={service} index={i} />
                     ))}

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Shield, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
+import { Shield, Mail, MapPin, ArrowUpRight } from 'lucide-react'
 
 const LinkedinIcon = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -28,42 +28,42 @@ export default function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="bg-[#030712] border-t border-white/5 relative overflow-hidden">
-            <div className="absolute inset-0 cyber-grid opacity-10" />
+        <footer className="relative overflow-hidden" style={{ backgroundColor: 'var(--color-bg-soft)', borderTop: '1px solid var(--color-border)' }}>
+            <div className="absolute inset-0 cyber-grid opacity-20" />
 
-            <div className="max-w-7xl mx-auto px-6 py-16 relative">
-                <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-16">
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 py-16 relative">
+                <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
                     {/* Brand */}
                     <div className="col-span-2">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 btn-primary rounded-xl flex items-center justify-center">
                                 <Shield size={20} className="text-white" />
                             </div>
                             <div>
-                                <span className="text-white font-bold text-xl">CipherGuard</span>
-                                <span className="text-xs text-cyan-400 block leading-none tracking-widest uppercase">Security</span>
+                                <span className="font-bold text-xl" style={{ color: 'var(--color-text)' }}>CipherGuard</span>
+                                <span className="text-xs block leading-none tracking-widest uppercase" style={{ color: 'var(--color-primary-deep)' }}>Security</span>
                             </div>
                         </div>
 
-                        <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                        <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--color-text-soft)' }}>
                             Enterprise-grade cybersecurity assessments, VAPT, and compliance services
-                            trusted by organizations worldwide.
+                            for ambitious teams and growing businesses.
                         </p>
 
                         {/* Contact */}
                         <div className="space-y-2">
                             {[
                                 { icon: Mail, text: 'security@cipherguard.io', href: 'mailto:security@cipherguard.io' },
-                                { icon: Phone, text: '+1 (555) 000-1234', href: 'tel:+15550001234' },
-                                { icon: MapPin, text: 'San Francisco, CA & Remote', href: '#' },
+                                { icon: MapPin, text: 'Remote-first · Serving clients worldwide', href: '#' },
                             ].map((item) => (
                                 <a
                                     key={item.text}
                                     href={item.href}
-                                    className="flex items-center gap-2 text-gray-500 hover:text-gray-300 transition-colors text-sm"
+                                    className="flex items-center gap-2 transition-colors text-sm"
+                                    style={{ color: 'var(--color-text-soft)' }}
                                 >
-                                    <item.icon size={14} className="text-cyan-400 flex-shrink-0" />
-                                    {item.text}
+                                    <item.icon size={14} style={{ color: 'var(--color-primary)' }} className="flex-shrink-0" />
+                                    <span>{item.text}</span>
                                 </a>
                             ))}
                         </div>
@@ -80,7 +80,8 @@ export default function Footer() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={s.label}
-                                    className="w-9 h-9 glass rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:border-white/10 border border-transparent transition-all"
+                                    className="w-9 h-9 glass rounded-lg flex items-center justify-center transition-all hover:shadow-md"
+                                    style={{ color: 'var(--color-text-soft)' }}
                                 >
                                     <s.icon />
                                 </a>
@@ -91,18 +92,20 @@ export default function Footer() {
                     {/* Links */}
                     {Object.entries(footerLinks).map(([category, links]) => (
                         <div key={category}>
-                            <h4 className="text-white font-semibold text-sm mb-4">{category}</h4>
+                            <h4 className="font-semibold text-sm mb-4" style={{ color: 'var(--color-text)' }}>{category}</h4>
                             <ul className="space-y-2">
                                 {links.map((link) => (
                                     <li key={link}>
                                         <a
                                             href="#"
-                                            className="text-gray-500 hover:text-gray-300 text-sm transition-colors flex items-center gap-1 group"
+                                            className="text-sm transition-colors flex items-center gap-1 group"
+                                            style={{ color: 'var(--color-text-soft)' }}
                                         >
                                             {link}
                                             <ArrowUpRight
                                                 size={10}
                                                 className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-0.5"
+                                                style={{ color: 'var(--color-primary)' }}
                                             />
                                         </a>
                                     </li>
@@ -115,23 +118,23 @@ export default function Footer() {
                 {/* Certifications */}
                 <div className="flex flex-wrap gap-3 mb-10">
                     {['OSCP Certified', 'CREST Member', 'ISO 27001', 'PCI SSF', 'GDPR Compliant'].map((cert) => (
-                        <div key={cert} className="px-3 py-1.5 glass rounded-lg text-xs text-gray-500 border border-white/5">
+                        <div key={cert} className="px-3 py-1.5 glass rounded-lg text-xs font-medium" style={{ color: 'var(--color-text-soft)' }}>
                             {cert}
                         </div>
                     ))}
                 </div>
 
                 {/* Bottom bar */}
-                <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-                    <p className="text-gray-600 text-sm">
+                <div className="flex flex-col md:flex-row items-center justify-between pt-8 gap-4" style={{ borderTop: '1px solid var(--color-border)' }}>
+                    <p className="text-sm" style={{ color: 'var(--color-text-faint)' }}>
                         © {year} CipherGuard Security. All rights reserved.
                     </p>
-                    <p className="text-gray-700 text-xs text-center">
+                    <p className="text-xs text-center" style={{ color: 'var(--color-text-faint)' }}>
                         For educational and authorized security testing only. Unauthorized use prohibited.
                     </p>
                     <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse-glow" />
-                        <span className="text-xs text-gray-600">All systems operational</span>
+                        <div className="w-1.5 h-1.5 rounded-full animate-pulse-glow" style={{ background: 'var(--color-primary)' }} />
+                        <span className="text-xs" style={{ color: 'var(--color-text-faint)' }}>All systems operational</span>
                     </div>
                 </div>
             </div>

@@ -3,77 +3,80 @@ import { ArrowRight, Calendar, Shield } from 'lucide-react'
 
 export default function CTA({ onDownloadReport }) {
     return (
-        <section className="py-24 bg-[#030712] relative overflow-hidden">
-            <div className="absolute inset-0 cyber-grid opacity-20" />
+        <section className="py-20 md:py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--color-bg)' }}>
+            <div className="absolute inset-0 cyber-grid opacity-30" />
 
             {/* Gradient orbs */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px]">
-                <div className="absolute left-0 w-1/2 h-full bg-cyan-500/8 rounded-full blur-3xl" />
-                <div className="absolute right-0 w-1/2 h-full bg-purple-600/8 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] flex">
+                <div className="w-1/2 h-full rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(234, 88, 12, 0.10)' }} />
+                <div className="w-1/2 h-full rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(180, 83, 9, 0.10)' }} />
             </div>
 
-            <div className="max-w-5xl mx-auto px-6 relative">
+            <div className="max-w-5xl mx-auto px-5 sm:px-6 relative">
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="glass-strong rounded-3xl p-8 md:p-16 text-center border border-white/5 relative overflow-hidden"
+                    className="glass-strong rounded-3xl p-8 md:p-16 text-center relative overflow-hidden"
                 >
                     {/* Background gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-600/5" />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(234,88,12,0.06), transparent, rgba(180,83,9,0.06))' }} />
 
                     {/* Corner decorations */}
-                    <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-br-3xl" />
-                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-purple-600/10 to-transparent rounded-tl-3xl" />
+                    <div className="absolute top-0 left-0 w-32 h-32 rounded-br-3xl"
+                        style={{ background: 'linear-gradient(135deg, rgba(234,88,12,0.12), transparent)' }} />
+                    <div className="absolute bottom-0 right-0 w-32 h-32 rounded-tl-3xl"
+                        style={{ background: 'linear-gradient(315deg, rgba(180,83,9,0.12), transparent)' }} />
 
                     <div className="relative">
                         {/* Icon */}
                         <motion.div
-                            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-600/20 border border-white/10 flex items-center justify-center mx-auto mb-6"
+                            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                            style={{ background: 'rgba(234,88,12,0.12)', border: '1px solid rgba(234,88,12,0.25)' }}
                             animate={{ y: [0, -8, 0] }}
                             transition={{ repeat: Infinity, duration: 3 }}
                         >
-                            <Shield size={28} className="text-cyan-400" />
+                            <Shield size={28} style={{ color: 'var(--color-primary)' }} />
                         </motion.div>
 
                         {/* Headline */}
-                        <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                        <h2 className="text-3xl md:text-6xl font-bold mb-6 tracking-tight" style={{ color: 'var(--color-text)' }}>
                             Ready to Secure<br />
                             <span className="gradient-text">Your Business?</span>
                         </h2>
 
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
-                            Join 150+ organizations that trust CipherGuard to protect their digital assets.
-                            Get a free consultation and custom security roadmap.
+                        <p className="text-base md:text-lg max-w-2xl mx-auto mb-10" style={{ color: 'var(--color-text-soft)' }}>
+                            Partner with engineers who treat your security like their own.
+                            Get a free consultation and a custom security roadmap — no pressure, no jargon.
                         </p>
 
                         {/* Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a
                                 href="#contact"
-                                className="group flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-white relative overflow-hidden"
+                                className="group flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-white relative overflow-hidden w-full sm:w-auto justify-center"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <div className="absolute inset-0 btn-primary" />
                                 <Calendar size={18} className="relative" />
                                 <span className="relative">Book Consultation</span>
                                 <ArrowRight size={16} className="relative transition-transform group-hover:translate-x-1" />
                             </a>
 
-                            <a
-                                href="#contact"
-                                className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-gray-300 glass border border-white/10 hover:border-cyan-400/30 hover:text-white transition-all"
+                            <button
+                                onClick={onDownloadReport}
+                                className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold glass transition-all w-full sm:w-auto justify-center"
+                                style={{ color: 'var(--color-text)' }}
                             >
-                                <Shield size={18} />
-                                Request Assessment
-                            </a>
+                                <Shield size={18} style={{ color: 'var(--color-primary)' }} />
+                                Download Sample Report
+                            </button>
                         </div>
 
                         {/* Trust indicators */}
-                        <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-sm text-gray-500">
-                            {['Free Initial Consultation', 'NDA on Request', 'Results in 5-7 Days', 'Free Retest Included'].map((item) => (
+                        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-10 text-sm" style={{ color: 'var(--color-text-soft)' }}>
+                            {['Free Initial Consultation', 'NDA on Request', 'Results in 5–7 Days', 'Free Retest Included'].map((item) => (
                                 <div key={item} className="flex items-center gap-2">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
                                     {item}
                                 </div>
                             ))}

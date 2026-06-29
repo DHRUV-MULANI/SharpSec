@@ -41,11 +41,12 @@ export default function FAQ() {
     const [open, setOpen] = useState(null)
 
     return (
-        <section id="faq" className="py-24 bg-[#030712] relative overflow-hidden">
-            <div className="absolute inset-0 cyber-grid opacity-15" />
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-cyan-500/4 rounded-full blur-3xl" />
+        <section id="faq" className="py-20 md:py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--color-bg-soft)' }}>
+            <div className="absolute inset-0 cyber-grid opacity-30" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none"
+                style={{ background: 'rgba(234, 88, 12, 0.05)' }} />
 
-            <div className="max-w-3xl mx-auto px-6 relative">
+            <div className="max-w-3xl mx-auto px-5 sm:px-6 relative">
                 {/* Header */}
                 <motion.div
                     className="text-center mb-12"
@@ -53,11 +54,12 @@ export default function FAQ() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full border border-cyan-400/20 mb-6">
-                        <HelpCircle size={12} className="text-cyan-400" />
-                        <span className="text-xs text-cyan-400 uppercase tracking-widest">FAQ</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full mb-6"
+                        style={{ borderColor: 'rgba(234,88,12,0.25)' }}>
+                        <HelpCircle size={12} style={{ color: '#EA580C' }} />
+                        <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: 'var(--color-primary-deep)' }}>FAQ</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight" style={{ color: 'var(--color-text)' }}>
                         Common Questions<br />
                         <span className="gradient-text">Answered</span>
                     </h2>
@@ -72,20 +74,24 @@ export default function FAQ() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.07 }}
-                            className="glass rounded-2xl overflow-hidden border border-transparent hover:border-white/5 transition-all"
-                            style={open === i ? { borderColor: 'rgba(0,212,255,0.15)' } : {}}
+                            className="glass rounded-2xl overflow-hidden transition-all"
+                            style={open === i ? { borderColor: 'rgba(234,88,12,0.3)' } : {}}
                         >
                             <button
                                 className="w-full flex items-center justify-between p-5 text-left"
                                 onClick={() => setOpen(open === i ? null : i)}
                                 aria-expanded={open === i}
                             >
-                                <span className={`font-medium text-sm md:text-base transition-colors ${open === i ? 'text-cyan-400' : 'text-white'}`}>
+                                <span className="font-medium text-sm md:text-base text-left" style={{ color: open === i ? 'var(--color-primary-deep)' : 'var(--color-text)' }}>
                                     {faq.q}
                                 </span>
                                 <ChevronDown
                                     size={18}
-                                    className={`text-gray-400 flex-shrink-0 ml-4 transition-transform duration-300 ${open === i ? 'rotate-180 text-cyan-400' : ''}`}
+                                    className="flex-shrink-0 ml-4 transition-transform duration-300"
+                                    style={{
+                                        color: open === i ? 'var(--color-primary)' : 'var(--color-text-faint)',
+                                        transform: open === i ? 'rotate(180deg)' : 'rotate(0)',
+                                    }}
                                 />
                             </button>
 
@@ -98,7 +104,8 @@ export default function FAQ() {
                                         transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                                         className="overflow-hidden"
                                     >
-                                        <div className="px-5 pb-5 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                                        <div className="px-5 pb-5 text-sm leading-relaxed pt-4"
+                                            style={{ color: 'var(--color-text-soft)', borderTop: '1px solid var(--color-border)' }}>
                                             {faq.a}
                                         </div>
                                     </motion.div>
@@ -115,10 +122,11 @@ export default function FAQ() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    <p className="text-gray-500 mb-4">Still have questions?</p>
+                    <p className="mb-4" style={{ color: 'var(--color-text-soft)' }}>Still have questions?</p>
                     <a
                         href="#contact"
-                        className="inline-flex items-center gap-2 px-6 py-3 glass rounded-xl text-cyan-400 border border-cyan-400/20 hover:border-cyan-400/40 transition-all text-sm font-medium"
+                        className="inline-flex items-center gap-2 px-6 py-3 glass rounded-xl transition-all text-sm font-semibold"
+                        style={{ color: 'var(--color-primary-deep)', border: '1px solid rgba(234,88,12,0.25)' }}
                     >
                         Talk to a Security Expert
                     </a>

@@ -1,12 +1,41 @@
 @import "tailwindcss";
 
+/* ============================================================
+   CipherGuard — Light Cream / Orange / Brown / White theme
+   Warm, premium, airy. Cream backgrounds, espresso text,
+   orange accents, soft shadows (no neon glow).
+   ============================================================ */
+
 @layer base {
   :root {
-    --color-bg: #030712;
-    --color-card: #111827;
-    --color-primary: #00D4FF;
-    --color-secondary: #7C3AED;
-    --color-accent: #00FFC8;
+    /* Surfaces */
+    --color-bg: #FBF7F0;        /* cream */
+    --color-bg-soft: #F4ECE0;   /* warm sand */
+    --color-card: #FFFFFF;      /* white card */
+    --color-card-tint: rgba(255, 255, 255, 0.72);
+
+    /* Brand */
+    --color-primary: #EA580C;   /* orange */
+    --color-primary-deep: #C2410C; /* deep orange */
+    --color-rust: #B45309;      /* rust / amber-brown */
+    --color-secondary: #92400E; /* espresso brown */
+    --color-accent: #F59E0B;    /* amber */
+
+    /* Text */
+    --color-text: #2A1B0E;      /* near-black espresso */
+    --color-text-soft: #5C4434; /* muted brown */
+    --color-text-faint: #9C8674;/* faint taupe */
+
+    /* Lines */
+    --color-border: rgba(74, 44, 18, 0.10);
+    --color-border-strong: rgba(74, 44, 18, 0.18);
+
+    /* Shadows */
+    --shadow-soft: 0 1px 2px rgba(74, 44, 18, 0.04), 0 8px 24px rgba(74, 44, 18, 0.06);
+    --shadow-lift: 0 2px 4px rgba(74, 44, 18, 0.05), 0 18px 40px rgba(74, 44, 18, 0.10);
+
+    /* Legacy aliases (mapped so old component color refs still resolve) */
+    --color-old-primary: var(--color-primary);
   }
 
   * {
@@ -18,69 +47,74 @@
   }
 
   body {
-    background-color: #030712;
-    color: white;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: rgba(0, 212, 255, 0.3);
-    color: white;
+    background: rgba(234, 88, 12, 0.18);
+    color: var(--color-text);
   }
 
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #030712;
+    background: var(--color-bg-soft);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #00D4FF, #7C3AED);
-    border-radius: 2px;
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-rust));
+    border-radius: 4px;
   }
 }
 
 @layer utilities {
+  /* Glass is now a clean, slightly translucent white card with soft border + shadow */
   .glass {
-    background: rgba(17, 24, 39, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--color-card-tint);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-soft);
   }
 
   .glass-strong {
-    background: rgba(17, 24, 39, 0.85);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #FFFFFF;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lift);
   }
 
+  /* Glow utilities become soft warm tints (no neon) */
   .glow-blue {
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 0 0 transparent;
   }
-
   .glow-purple {
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 60px rgba(124, 58, 237, 0.1);
+    box-shadow: var(--shadow-lift);
   }
-
   .glow-text-blue {
-    text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+    text-shadow: none;
   }
-
   .glow-text-purple {
-    text-shadow: 0 0 20px rgba(124, 58, 237, 0.6);
+    text-shadow: none;
   }
 
+  /* Gradient text: orange → rust → espresso-brown */
   .gradient-text {
-    background: linear-gradient(135deg, #00D4FF 0%, #7C3AED 50%, #00FFC8 100%);
+    background: linear-gradient(135deg, #EA580C 0%, #B45309 55%, #6B3410 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
+  /* Gradient border (for special cards) */
   .gradient-border {
     position: relative;
   }
@@ -91,13 +125,14 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, #00D4FF, #7C3AED, #00FFC8);
+    background: linear-gradient(135deg, #EA580C, #B45309, #92400E);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
   }
 
+  /* Subtle paper grain (very faint) */
   .noise {
     position: relative;
   }
@@ -106,22 +141,23 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+    opacity: 0.02;
     pointer-events: none;
   }
 
+  /* Grid overlay: warm, faint */
   .cyber-grid {
     background-image:
-      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
+      linear-gradient(rgba(180, 83, 9, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(180, 83, 9, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 
   .scan-line {
     background: linear-gradient(to bottom,
         transparent 0%,
-        rgba(0, 212, 255, 0.05) 50%,
+        rgba(234, 88, 12, 0.04) 50%,
         transparent 100%);
     background-size: 100% 4px;
     animation: scanLine 8s linear infinite;
@@ -129,89 +165,50 @@
 }
 
 @keyframes scanLine {
-  0% {
-    background-position: 0 -100vh;
-  }
-
-  100% {
-    background-position: 0 100vh;
-  }
+  0% { background-position: 0 -100vh; }
+  100% { background-position: 0 100vh; }
 }
 
 @keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-20px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
 @keyframes pulse-glow {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
 }
 
 @keyframes rotate-slow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes data-flow {
-  0% {
-    stroke-dashoffset: 1000;
-  }
-
-  100% {
-    stroke-dashoffset: 0;
-  }
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
 }
 
 @keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
-
 .animate-float-delay {
   animation: float 6s ease-in-out infinite 2s;
 }
-
 .animate-float-delay-2 {
   animation: float 6s ease-in-out infinite 4s;
 }
-
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
-
 .animate-rotate-slow {
   animation: rotate-slow 20s linear infinite;
 }
-
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
@@ -226,9 +223,27 @@
   opacity: 0;
   transform: translateY(20px);
 }
-
 .page-enter-active {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Reusable primary button (warm gradient) — used across CTAs */
+.btn-primary {
+  background: linear-gradient(135deg, #EA580C 0%, #B45309 100%);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.28);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #F97316 0%, #C2410C 100%);
+  box-shadow: 0 10px 26px rgba(234, 88, 12, 0.35);
+}
+
+/* Focus ring for accessibility */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, 0.5);
+  outline-offset: 2px;
 }

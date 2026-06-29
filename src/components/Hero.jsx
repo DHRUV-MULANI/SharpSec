@@ -1,167 +1,210 @@
-import { useRef, useEffect, useState, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Download, ChevronDown, Play } from 'lucide-react'
+import { ArrowRight, Download, ChevronDown, Shield, Lock, Bug, Radar, KeyRound } from 'lucide-react'
 
-const HeroScene = lazy(() => import('./HeroScene'))
+const BlackHoleScene = lazy(() => import('./BlackHoleScene'))
 
-const words = ['Attackers', 'Hackers', 'Threats', 'Breaches']
+/* Full phrase: "Before <word> Find the Weakness."
+   The <word> cycles with a typewriter (type → hold → delete → next). */
+const ROTATING = ['Attackers', 'Hackers', 'Threats', 'Breaches']
+
+function useTypewriter(words, { typeSpeed = 90, deleteSpeed = 45, hold = 1400 } = {}) {
+    const [index, setIndex] = useState(0)
+    const [sub, setSub] = useState('')
+    const [deleting, setDeleting] = useState(false)
+
+    useEffect(() => {
+        const current = words[index % words.length]
+        let timeout
+
+        if (!deleting && sub === current) {
+            timeout = setTimeout(() => setDeleting(true), hold)
+        } else if (deleting && sub === '') {
+            setDeleting(false)
+            setIndex((i) => (i + 1) % words.length)
+        } else {
+            timeout = setTimeout(() => {
+                setSub((prev) =>
+                    deleting ? current.slice(0, prev.length - 1) : current.slice(0, prev.length + 1)
+                )
+            }, deleting ? deleteSpeed : typeSpeed)
+        }
+        return () => clearTimeout(timeout)
+    }, [sub, deleting, index, words, typeSpeed, deleteSpeed, hold])
+
+    return sub
+}
+
+/* Floating security tags that orbit around the black hole visually */
+const floaters = [
+    { Icon: Shield, label: 'Threat Protection', angle: 'top-2 left-1/4', delay: 0, color: '#EA580C' },
+    { Icon: Lock, label: 'Access Control', angle: 'top-1/3 right-2', delay: 0.4, color: '#B45309' },
+    { Icon: Bug, label: 'Vuln Discovery', angle: 'bottom-10 left-0', delay: 0.8, color: '#F59E0B' },
+    { Icon: Radar, label: 'Recon', angle: 'bottom-2 right-1/4', delay: 1.2, color: '#EA580C' },
+    { Icon: KeyRound, label: 'Privilege', angle: 'top-1/2 left-2', delay: 1.6, color: '#B45309' },
+]
 
 export default function Hero({ onDownloadReport }) {
-    const mousePos = useRef({ x: 0, y: 0 })
-    const scrollY = useRef(0)
-    const [wordIndex, setWordIndex] = useState(0)
-    const [displayWord, setDisplayWord] = useState(words[0])
-
-    useEffect(() => {
-        const handleMouse = (e) => {
-            mousePos.current = {
-                x: (e.clientX / window.innerWidth - 0.5) * 2,
-                y: -(e.clientY / window.innerHeight - 0.5) * 2
-            }
-        }
-        const handleScroll = () => { scrollY.current = window.scrollY }
-        window.addEventListener('mousemove', handleMouse)
-        window.addEventListener('scroll', handleScroll)
-        return () => {
-            window.removeEventListener('mousemove', handleMouse)
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setWordIndex((prev) => (prev + 1) % words.length)
-        }, 2500)
-        return () => clearInterval(interval)
-    }, [])
-
-    useEffect(() => {
-        setDisplayWord(words[wordIndex])
-    }, [wordIndex])
+    const typed = useTypewriter(ROTATING)
 
     const containerVariants = {
         hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
+        visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } }
     }
     const itemVariants = {
-        hidden: { opacity: 0, y: 40 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.23, 1, 0.32, 1] } }
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.23, 1, 0.32, 1] } }
     }
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030712]">
-            {/* 3D Scene */}
-            <Suspense fallback={null}>
-                <HeroScene mousePos={mousePos} scrollY={scrollY} />
-            </Suspense>
+        <section
+            className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-24"
+            style={{ backgroundColor: 'var(--color-bg)' }}
+        >
+            {/* Warm grid + soft glows */}
+            <div className="absolute inset-0 cyber-grid opacity-40" />
+            <div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none"
+                style={{ background: 'rgba(234, 88, 12, 0.10)' }} />
+            <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none"
+                style={{ background: 'rgba(180, 83, 9, 0.08)' }} />
 
-            {/* Dark gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/40 via-transparent to-[#030712]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/60 via-transparent to-[#030712]/60" />
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 w-full relative z-10">
+                <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
 
-            {/* Cyber grid overlay */}
-            <div className="absolute inset-0 cyber-grid opacity-30" />
-
-            {/* Content */}
-            <motion.div
-                className="relative z-10 text-center px-6 max-w-5xl mx-auto"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {/* Badge */}
-                <motion.div variants={itemVariants} className="flex justify-center mb-8">
-                    <div className="flex items-center gap-2 px-4 py-2 glass rounded-full border border-cyan-400/20">
-                        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse-glow" />
-                        <span className="text-xs text-cyan-400 font-medium tracking-widest uppercase">
-                            Enterprise Security Intelligence
-                        </span>
-                    </div>
-                </motion.div>
-
-                {/* Headline */}
-                <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-                    <span className="text-white">Protect Your Business</span>
-                    <br />
-                    <span className="text-white">Before </span>
-                    <span className="relative inline-block">
-                        <motion.span
-                            key={displayWord}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.4 }}
-                            className="gradient-text glow-text-blue"
-                        >
-                            {displayWord}
-                        </motion.span>
-                    </span>
-                    <br />
-                    <span className="text-white">Find the Weakness.</span>
-                </motion.h1>
-
-                {/* Subtitle */}
-                <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-                    Enterprise-grade security assessments, VAPT, compliance audits, red teaming,
-                    cloud security, API testing, and secure code reviews — delivered by elite security engineers.
-                </motion.p>
-
-                {/* Buttons */}
-                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a
-                        href="#contact"
-                        className="group relative flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-white overflow-hidden"
+                    {/* ── LEFT: typing headline ── */}
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="text-center lg:text-left"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="absolute inset-0 glow-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <span className="relative">Book Free Consultation</span>
-                        <ArrowRight size={18} className="relative transition-transform group-hover:translate-x-1" />
-                    </a>
+                        {/* Badge */}
+                        <motion.div variants={itemVariants} className="flex justify-center lg:justify-start mb-6">
+                            <div className="flex items-center gap-2 px-4 py-2 glass rounded-full"
+                                style={{ borderColor: 'rgba(234, 88, 12, 0.25)' }}>
+                                <div className="w-2 h-2 rounded-full animate-pulse-glow" style={{ background: 'var(--color-primary)' }} />
+                                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-primary-deep)' }}>
+                                    Enterprise Security Intelligence
+                                </span>
+                            </div>
+                        </motion.div>
 
-                    <button
-                        onClick={onDownloadReport}
-                        className="group flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-gray-300 glass hover:text-white transition-all duration-300 border border-white/10 hover:border-cyan-400/30"
+                        {/* Headline with typewriter */}
+                        <motion.h1 variants={itemVariants}
+                            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] mb-6 tracking-tight"
+                            style={{ color: 'var(--color-text)' }}>
+                            Protect Your Business Before{' '}
+                            <span className="relative inline-block">
+                                <span className="gradient-text">{typed}</span>
+                                {/* blinking caret */}
+                                <span
+                                    className="inline-block w-[3px] h-[0.9em] align-middle ml-1 animate-pulse-glow"
+                                    style={{ background: 'var(--color-primary)', borderRadius: 2 }}
+                                />
+                            </span>
+                            <br />
+                            Find the Weakness.
+                        </motion.h1>
+
+                        {/* Subtitle */}
+                        <motion.p variants={itemVariants}
+                            className="text-base md:text-lg max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
+                            style={{ color: 'var(--color-text-soft)' }}>
+                            Enterprise-grade security assessments, VAPT, compliance audits, red teaming,
+                            cloud security, API testing, and secure code reviews — delivered by elite security engineers.
+                        </motion.p>
+
+                        {/* Buttons */}
+                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                            <a
+                                href="#contact"
+                                className="group relative flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white overflow-hidden transition-shadow w-full sm:w-auto justify-center"
+                            >
+                                <div className="absolute inset-0 btn-primary" />
+                                <span className="relative">Book Free Consultation</span>
+                                <ArrowRight size={18} className="relative transition-transform group-hover:translate-x-1" />
+                            </a>
+                            <button
+                                onClick={onDownloadReport}
+                                className="group flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold glass transition-all duration-300 w-full sm:w-auto justify-center"
+                                style={{ color: 'var(--color-text)' }}
+                            >
+                                <Download size={18} className="transition-transform group-hover:-translate-y-0.5" style={{ color: 'var(--color-primary)' }} />
+                                Sample Report
+                            </button>
+                        </motion.div>
+
+                        {/* Stats row */}
+                        <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-x-7 gap-y-3 mt-10">
+                            {[
+                                { value: 'OWASP', label: 'Standards' },
+                                { value: '24h', label: 'Response' },
+                                { value: '100%', label: 'Manual' },
+                                { value: '5–7d', label: 'Turnaround' },
+                            ].map((stat) => (
+                                <div key={stat.label} className="text-center lg:text-left">
+                                    <div className="text-xl md:text-2xl font-bold gradient-text">{stat.value}</div>
+                                    <div className="text-xs" style={{ color: 'var(--color-text-faint)' }}>{stat.label}</div>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </motion.div>
+
+                    {/* ── RIGHT: orange black hole + security orbiters ── */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1, ease: [0.23, 1, 0.32, 1], delay: 0.3 }}
+                        className="relative h-[340px] sm:h-[440px] lg:h-[540px] w-full"
                     >
-                        <Download size={18} className="transition-transform group-hover:-translate-y-0.5" />
-                        Download Sample Report
-                    </button>
-                </motion.div>
-
-                {/* Stats row */}
-                <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center gap-8 mt-16">
-                    {[
-                        { value: '500+', label: 'Assessments Done' },
-                        { value: '99%', label: 'Client Satisfaction' },
-                        { value: '1000+', label: 'Critical Bugs Fixed' },
-                        { value: '24h', label: 'Initial Response' },
-                    ].map((stat) => (
-                        <div key={stat.label} className="text-center">
-                            <div className="text-2xl font-bold gradient-text">{stat.value}</div>
-                            <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
+                        {/* The 3D black hole */}
+                        <div className="absolute inset-0">
+                            <Suspense fallback={
+                                <div className="w-full h-full flex items-center justify-center">
+                                    <div className="w-32 h-32 rounded-full animate-pulse-glow"
+                                        style={{ background: 'radial-gradient(circle at 30% 30%, #F59E0B, #EA580C 40%, #1A0F06 75%)' }} />
+                                </div>
+                            }>
+                                <BlackHoleScene />
+                            </Suspense>
                         </div>
-                    ))}
-                </motion.div>
-            </motion.div>
+
+                        {/* Floating security tag chips */}
+                        {floaters.map((f, i) => (
+                            <motion.div
+                                key={f.label}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 1 + f.delay, duration: 0.6 }}
+                                className={`absolute ${f.angle} z-10`}
+                            >
+                                <motion.div
+                                    animate={{ y: [0, -8, 0] }}
+                                    transition={{ repeat: Infinity, duration: 3 + i * 0.3, ease: 'easeInOut', delay: f.delay }}
+                                    className="flex items-center gap-2 px-3 py-1.5 glass rounded-full whitespace-nowrap"
+                                    style={{ borderColor: `${f.color}40` }}
+                                >
+                                    <f.Icon size={13} style={{ color: f.color }} />
+                                    <span className="text-xs font-semibold" style={{ color: 'var(--color-text)' }}>{f.label}</span>
+                                </motion.div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
+            </div>
 
             {/* Scroll indicator */}
             <motion.div
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
+                transition={{ delay: 1.8 }}
             >
-                <span className="text-xs text-gray-600 tracking-widest uppercase">Scroll</span>
-                <motion.div
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                >
-                    <ChevronDown size={16} className="text-gray-600" />
+                <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--color-text-faint)' }}>Scroll</span>
+                <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
+                    <ChevronDown size={16} style={{ color: 'var(--color-primary)' }} />
                 </motion.div>
             </motion.div>
-
-            {/* Scan line effect */}
-            <div className="absolute inset-0 scan-line pointer-events-none opacity-30" />
         </section>
     )
 }
