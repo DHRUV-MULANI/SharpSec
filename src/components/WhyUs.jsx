@@ -22,11 +22,6 @@ const differentiators = [
         icon: Shield, color: ORANGE
     },
     {
-        title: 'Certified Security Engineers',
-        desc: 'Our engineers hold OSCP, CREST, CEH, CISSP and CCSP certifications. You get senior engineers on every engagement — not juniors learning on your systems.',
-        icon: Award, color: RUST
-    },
-    {
         title: 'Business-Context Reports',
         desc: 'We translate technical vulnerabilities into business risk language. Every finding includes CVSS score, business impact, and step-by-step remediation.',
         icon: FileCheck, color: AMBER

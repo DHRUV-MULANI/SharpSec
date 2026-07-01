@@ -124,7 +124,7 @@ export default function FAQ() {
                 >
                     <p className="mb-4" style={{ color: 'var(--color-text-soft)' }}>Still have questions?</p>
                     <a
-                        href="#contact"
+                        href="/#contact"
                         className="inline-flex items-center gap-2 px-6 py-3 glass rounded-xl transition-all text-sm font-semibold"
                         style={{ color: 'var(--color-primary-deep)', border: '1px solid rgba(234,88,12,0.25)' }}
                     >

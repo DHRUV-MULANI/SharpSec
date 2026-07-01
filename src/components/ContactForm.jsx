@@ -58,7 +58,7 @@ export default function ContactForm() {
             setForm(EMPTY)
         } catch (err) {
             console.error('EmailJS error:', err)
-            setErrorMsg(err?.text || 'Could not send. Please try again or email security@cipherguard.io')
+            setErrorMsg(err?.text || 'Could not send. Please try again or email security@evolutesec.io')
             setStatus('error')
         }
     }

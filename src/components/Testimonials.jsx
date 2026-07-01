@@ -6,13 +6,13 @@ const testimonials = [
     {
         name: 'Rajesh Kumar', title: 'CISO', company: 'FinTech Solutions Ltd', initials: 'RK',
         color: '#00D4FF',
-        text: "CipherGuard's web application VAPT was the most thorough assessment we've ever had. They found a critical SQL injection that three previous firms missed. The report was exceptional — our board actually understood the business risk for once.",
+        text: "EvoluteSec's web application VAPT was the most thorough assessment we've ever had. They found a critical SQL injection that three previous firms missed. The report was exceptional — our board actually understood the business risk for once.",
         rating: 5, industry: 'Financial Services'
     },
     {
         name: 'Sarah Chen', title: 'CTO', company: 'HealthTech Platform', initials: 'SC',
         color: '#7C3AED',
-        text: "We needed ISO 27001 certification in 6 months. CipherGuard's gap analysis and remediation roadmap made it possible. Their team was available at every step. We passed the certification audit on the first attempt.",
+        text: "We needed ISO 27001 certification in 6 months. EvoluteSec's gap analysis and remediation roadmap made it possible. Their team was available at every step. We passed the certification audit on the first attempt.",
         rating: 5, industry: 'Healthcare Technology'
     },
     {
@@ -24,7 +24,7 @@ const testimonials = [
     {
         name: 'Priya Sharma', title: 'Security Lead', company: 'SaaS Platform Inc', initials: 'PS',
         color: '#00D4FF',
-        text: "We've worked with CipherGuard for 3 years across 12 engagements. Their cloud security assessment found misconfigurations that could have cost us millions in data breach fines. The free retest service is incredibly valuable.",
+        text: "We've worked with EvoluteSec for 3 years across 12 engagements. Their cloud security assessment found misconfigurations that could have cost us millions in data breach fines. The free retest service is incredibly valuable.",
         rating: 5, industry: 'SaaS'
     },
     {

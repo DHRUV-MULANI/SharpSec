@@ -1,8 +1,50 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { Component, useState, useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Download, ChevronDown, Shield, Lock, Bug, Radar, KeyRound } from 'lucide-react'
 
 const BlackHoleScene = lazy(() => import('./BlackHoleScene'))
+
+function BlackHoleFallback() {
+    return (
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full animate-pulse-glow">
+                <div
+                    className="absolute inset-0 rounded-full blur-3xl"
+                    style={{ background: 'rgba(234, 88, 12, 0.22)' }}
+                />
+                <div
+                    className="absolute inset-8 rounded-full"
+                    style={{ background: 'radial-gradient(circle at 42% 38%, #F59E0B 0%, #EA580C 26%, #7C2D12 48%, #1A0F06 68%, #050201 100%)' }}
+                />
+                <div
+                    className="absolute inset-3 rounded-full border"
+                    style={{ borderColor: 'rgba(245, 158, 11, 0.42)', boxShadow: '0 0 45px rgba(234, 88, 12, 0.32)' }}
+                />
+            </div>
+        </div>
+    )
+}
+
+
+class HeroSceneErrorBoundary extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { hasError: false }
+    }
+
+    static getDerivedStateFromError() {
+        return { hasError: true }
+    }
+
+    componentDidCatch(error) {
+        console.warn('Hero 3D scene failed, showing fallback.', error)
+    }
+
+    render() {
+        if (this.state.hasError) return <BlackHoleFallback />
+        return this.props.children
+    }
+}
 
 /* Full phrase: "Before <word> Find the Weakness."
    The <word> cycles with a typewriter (type → hold → delete → next). */
@@ -59,7 +101,6 @@ export default function Hero({ onDownloadReport }) {
     return (
         <section
             className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-24"
-            style={{ backgroundColor: 'var(--color-bg)' }}
         >
             {/* Warm grid + soft glows */}
             <div className="absolute inset-0 cyber-grid opacity-40" />
@@ -117,7 +158,7 @@ export default function Hero({ onDownloadReport }) {
                         {/* Buttons */}
                         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                             <a
-                                href="#contact"
+                                href="/#contact"
                                 className="group relative flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white overflow-hidden transition-shadow w-full sm:w-auto justify-center"
                             >
                                 <div className="absolute inset-0 btn-primary" />
@@ -150,45 +191,20 @@ export default function Hero({ onDownloadReport }) {
                         </motion.div>
                     </motion.div>
 
-                    {/* ── RIGHT: orange black hole + security orbiters ── */}
+                    {/* ── RIGHT: cybersecurity blackhole visual ── */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.85 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1, ease: [0.23, 1, 0.32, 1], delay: 0.3 }}
-                        className="relative h-[340px] sm:h-[440px] lg:h-[540px] w-full"
+                        className="relative h-[340px] sm:h-[440px] lg:h-[540px] w-full flex items-center justify-center"
                     >
-                        {/* The 3D black hole */}
-                        <div className="absolute inset-0">
-                            <Suspense fallback={
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <div className="w-32 h-32 rounded-full animate-pulse-glow"
-                                        style={{ background: 'radial-gradient(circle at 30% 30%, #F59E0B, #EA580C 40%, #1A0F06 75%)' }} />
-                                </div>
-                            }>
-                                <BlackHoleScene />
-                            </Suspense>
+                        <div className="absolute inset-0 z-10 w-full h-full">
+                            <HeroSceneErrorBoundary>
+                                <Suspense fallback={<BlackHoleFallback />}>
+                                    <BlackHoleScene />
+                                </Suspense>
+                            </HeroSceneErrorBoundary>
                         </div>
-
-                        {/* Floating security tag chips */}
-                        {floaters.map((f, i) => (
-                            <motion.div
-                                key={f.label}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 1 + f.delay, duration: 0.6 }}
-                                className={`absolute ${f.angle} z-10`}
-                            >
-                                <motion.div
-                                    animate={{ y: [0, -8, 0] }}
-                                    transition={{ repeat: Infinity, duration: 3 + i * 0.3, ease: 'easeInOut', delay: f.delay }}
-                                    className="flex items-center gap-2 px-3 py-1.5 glass rounded-full whitespace-nowrap"
-                                    style={{ borderColor: `${f.color}40` }}
-                                >
-                                    <f.Icon size={13} style={{ color: f.color }} />
-                                    <span className="text-xs font-semibold" style={{ color: 'var(--color-text)' }}>{f.label}</span>
-                                </motion.div>
-                            </motion.div>
-                        ))}
                     </motion.div>
                 </div>
             </div>

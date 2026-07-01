@@ -53,7 +53,7 @@ export default function CTA({ onDownloadReport }) {
                         {/* Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a
-                                href="#contact"
+                                href="/#contact"
                                 className="group flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-white relative overflow-hidden w-full sm:w-auto justify-center"
                             >
                                 <div className="absolute inset-0 btn-primary" />

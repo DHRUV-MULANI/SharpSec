@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Shield, Mail, MapPin, ArrowUpRight } from 'lucide-react'
 
@@ -15,13 +16,37 @@ const GithubIcon = () => (
 
 const footerLinks = {
     Services: [
-        'Web Application VAPT', 'Mobile App VAPT', 'API Security Testing',
-        'Cloud Security', 'Network Pentest', 'Red Team Assessment',
-        'ISO 27001', 'SOC 2 Readiness', 'PCI DSS Assessment'
+        { label: 'Web Application VAPT', to: '/#services' },
+        { label: 'Mobile App VAPT', to: '/#services' },
+        { label: 'API Security Testing', to: '/#services' },
+        { label: 'Cloud Security', to: '/#services' },
+        { label: 'Network Pentest', to: '/#services' },
+        { label: 'Red Team Assessment', to: '/#services' },
+        { label: 'ISO 27001', to: '/#services' },
+        { label: 'SOC 2 Readiness', to: '/#services' },
+        { label: 'PCI DSS Assessment', to: '/#services' },
     ],
-    Company: ['About Us', 'Our Team', 'Careers', 'Blog', 'Case Studies', 'Partners'],
-    Resources: ['Sample Reports', 'Security Blog', 'CVE Database', 'Tools & Scripts', 'FAQ'],
-    Legal: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Responsible Disclosure'],
+    Company: [
+        { label: 'About Us', to: '/about' },
+        { label: 'Our Team', to: '/team' },
+        { label: 'Careers', to: '/careers' },
+        { label: 'Blog', to: '/blog' },
+        { label: 'Case Studies', to: '/case-studies' },
+        { label: 'Partners', to: '/partners' },
+    ],
+    Resources: [
+        { label: 'Sample Reports', to: '/sample-reports' },
+        { label: 'Security Blog', to: '/blog' },
+        { label: 'CVE Database', to: '/cve-database' },
+        { label: 'Tools & Scripts', to: '/tools' },
+        { label: 'FAQ', to: '/faq' },
+    ],
+    Legal: [
+        { label: 'Privacy Policy', to: '/privacy-policy' },
+        { label: 'Terms of Service', to: '/terms-of-service' },
+        { label: 'Cookie Policy', to: '/cookie-policy' },
+        { label: 'Responsible Disclosure', to: '/responsible-disclosure' },
+    ],
 }
 
 export default function Footer() {
@@ -35,15 +60,15 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
                     {/* Brand */}
                     <div className="col-span-2">
-                        <div className="flex items-center gap-3 mb-4">
+                        <Link to="/" className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 btn-primary rounded-xl flex items-center justify-center">
                                 <Shield size={20} className="text-white" />
                             </div>
                             <div>
-                                <span className="font-bold text-xl" style={{ color: 'var(--color-text)' }}>CipherGuard</span>
+                                <span className="font-bold text-xl" style={{ color: 'var(--color-text)' }}>EvoluteSec</span>
                                 <span className="text-xs block leading-none tracking-widest uppercase" style={{ color: 'var(--color-primary-deep)' }}>Security</span>
                             </div>
-                        </div>
+                        </Link>
 
                         <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--color-text-soft)' }}>
                             Enterprise-grade cybersecurity assessments, VAPT, and compliance services
@@ -53,12 +78,12 @@ export default function Footer() {
                         {/* Contact */}
                         <div className="space-y-2">
                             {[
-                                { icon: Mail, text: 'security@cipherguard.io', href: 'mailto:security@cipherguard.io' },
-                                { icon: MapPin, text: 'Remote-first · Serving clients worldwide', href: '#' },
+                                { icon: Mail, text: 'dhruvkumarmulani@gmail.com', href: 'mailto:dhruvkumarmulani@gmail.com' },
+                                { icon: MapPin, text: 'Ahmedabad', href: null },
                             ].map((item) => (
                                 <a
                                     key={item.text}
-                                    href={item.href}
+                                    href={item.href || '#'}
                                     className="flex items-center gap-2 transition-colors text-sm"
                                     style={{ color: 'var(--color-text-soft)' }}
                                 >
@@ -71,8 +96,8 @@ export default function Footer() {
                         {/* Social */}
                         <div className="flex gap-3 mt-6">
                             {[
-                                { icon: LinkedinIcon, href: 'https://linkedin.com', label: 'LinkedIn' },
-                                { icon: GithubIcon, href: 'https://github.com', label: 'GitHub' },
+                                { icon: LinkedinIcon, href: 'https://www.linkedin.com/in/dhruv-mulani-963x/', label: 'LinkedIn' },
+                                { icon: GithubIcon, href: 'https://github.com/DHRUV-MULANI', label: 'GitHub' },
                             ].map((s) => (
                                 <a
                                     key={s.label}
@@ -95,19 +120,19 @@ export default function Footer() {
                             <h4 className="font-semibold text-sm mb-4" style={{ color: 'var(--color-text)' }}>{category}</h4>
                             <ul className="space-y-2">
                                 {links.map((link) => (
-                                    <li key={link}>
-                                        <a
-                                            href="#"
+                                    <li key={link.label}>
+                                        <Link
+                                            to={link.to}
                                             className="text-sm transition-colors flex items-center gap-1 group"
                                             style={{ color: 'var(--color-text-soft)' }}
                                         >
-                                            {link}
+                                            {link.label}
                                             <ArrowUpRight
                                                 size={10}
                                                 className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-0.5"
                                                 style={{ color: 'var(--color-primary)' }}
                                             />
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
@@ -127,7 +152,7 @@ export default function Footer() {
                 {/* Bottom bar */}
                 <div className="flex flex-col md:flex-row items-center justify-between pt-8 gap-4" style={{ borderTop: '1px solid var(--color-border)' }}>
                     <p className="text-sm" style={{ color: 'var(--color-text-faint)' }}>
-                        © {year} CipherGuard Security. All rights reserved.
+                        © {year} EvoluteSec Security. All rights reserved.
                     </p>
                     <p className="text-xs text-center" style={{ color: 'var(--color-text-faint)' }}>
                         For educational and authorized security testing only. Unauthorized use prohibited.

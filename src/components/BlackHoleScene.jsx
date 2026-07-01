@@ -1,5 +1,6 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* Orange / brown / amber palette */
@@ -46,7 +47,7 @@ function seededRandom(seed) {
 /* Accretion disk — flattened ring of bright orange particles spiralling inward */
 function AccretionDisk({ count = 1400 }) {
     const points = useRef()
-    const geometry = useMemo(() => {
+    const [geometry] = useState(() => {
         const rand = seededRandom(42)
         const positions = new Float32Array(count * 3)
         const data = []
@@ -60,9 +61,8 @@ function AccretionDisk({ count = 1400 }) {
             data.push({ r, angle, speed: 0.3 / (r * 0.6) })
         }
         return { positions, data }
-    }, [count])
+    })
 
-    // eslint-disable-next-line react-hooks/purity -- R3F useFrame animation: mutating ref-based geometry is standard pattern
     useFrame((_, delta) => {
         if (!points.current) return
         const pos = points.current.geometry.attributes.position.array
@@ -81,11 +81,12 @@ function AccretionDisk({ count = 1400 }) {
 
     // vertex colors: hot orange inner → amber outer
     const colors = useMemo(() => {
+        const rand = seededRandom(84)
         const c = new Float32Array(count * 3)
         const hot = new THREE.Color(ORANGE)
         const cool = new THREE.Color(AMBER)
         for (let i = 0; i < count; i++) {
-            const t = Math.random()
+            const t = rand()
             const col = hot.clone().lerp(cool, t)
             c[i * 3] = col.r; c[i * 3 + 1] = col.g; c[i * 3 + 2] = col.b
         }
@@ -104,7 +105,7 @@ function AccretionDisk({ count = 1400 }) {
 }
 
 /* Orbiting security icon — a small glowing node on a tilted circular orbit */
-function OrbitingIcon({ radius, speed, phase, tilt, color, offset }) {
+function OrbitingIcon({ radius, speed, phase, tilt, color, label }) {
     const ref = useRef()
     useFrame((state) => {
         if (!ref.current) return
@@ -123,7 +124,30 @@ function OrbitingIcon({ radius, speed, phase, tilt, color, offset }) {
                 <sphereGeometry args={[0.09, 12, 12]} />
                 <meshBasicMaterial color={color} transparent opacity={0.18} />
             </mesh>
-            {offset}
+            {label && (
+                <Html distanceFactor={6} center>
+                    <div className="glass-strong" style={{
+                        color: '#2A1B0E',
+                        fontWeight: '700',
+                        fontSize: '9px',
+                        letterSpacing: '0.05em',
+                        whiteSpace: 'nowrap',
+                        textTransform: 'uppercase',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        border: `1px solid ${color}40`,
+                        boxShadow: `0 0 8px ${color}20, inset 0 0 3px ${color}10`,
+                        marginTop: '15px',
+                        fontFamily: 'Inter, sans-serif',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                    }}>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: color, boxShadow: `0 0 8px ${color}` }}></div>
+                        {label}
+                    </div>
+                </Html>
+            )}
         </mesh>
     )
 }
@@ -151,11 +175,11 @@ function Lights() {
 export default function BlackHoleScene() {
     const orbits = useMemo(
         () => [
-            { radius: 2.0, speed: 0.7, phase: 0, tilt: 0.2, color: ORANGE },
-            { radius: 2.5, speed: -0.5, phase: 1.5, tilt: -0.4, color: AMBER },
-            { radius: 3.0, speed: 0.35, phase: 3, tilt: 0.6, color: RUST },
-            { radius: 2.2, speed: -0.6, phase: 4.5, tilt: -0.15, color: ORANGE },
-            { radius: 2.8, speed: 0.45, phase: 2, tilt: 0.35, color: AMBER },
+            { radius: 2.0, speed: 0.7, phase: 0, tilt: 0.2, color: ORANGE, label: 'Zero Trust' },
+            { radius: 2.5, speed: -0.5, phase: 1.5, tilt: -0.4, color: AMBER, label: '0-Day Intel' },
+            { radius: 3.0, speed: 0.35, phase: 3, tilt: 0.6, color: RUST, label: 'Red Team' },
+            { radius: 2.2, speed: -0.6, phase: 4.5, tilt: -0.15, color: ORANGE, label: 'VAPT' },
+            { radius: 2.8, speed: 0.45, phase: 2, tilt: 0.35, color: AMBER, label: 'SOC 2' },
         ],
         []
     )
@@ -167,7 +191,7 @@ export default function BlackHoleScene() {
         >
             <Lights />
             <Singularity />
-            <AccretionDisk count={1400} />
+            <AccretionDisk count={600} />
             {orbits.map((o, i) => (
                 <group key={i}>
                     <OrbitRing radius={o.radius} tilt={o.tilt} color={o.color} />

@@ -1,212 +1,107 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-    Globe, Smartphone, Code2, Cloud, Network, Wifi,
-    Server, Settings, FileCode, Target, Mail, Shield,
-    Lock, CreditCard, Eye, Database, ChevronDown
+    Shield, Globe, Smartphone, Code2, Network, Target,
+    Users, Activity, Search, Brain, FileWarning, Server,
+    Cloud, Lock, Container, GitBranch, CheckCircle,
+    Monitor, Radar, Clock, AlertTriangle, BarChart3,
+    ChevronRight, ArrowRight
 } from 'lucide-react'
 
-const services = [
-    {
-        icon: Globe, title: 'Web Application VAPT', color: '#EA580C',
-        short: 'Comprehensive web security testing following OWASP Top 10 and beyond.',
-        details: 'Full black-box, grey-box and white-box testing. SQL injection, XSS, CSRF, IDOR, broken auth, business logic flaws, and 150+ vulnerability checks. Detailed proof-of-concept for every finding.',
-        tags: ['OWASP Top 10', 'SANS 25', 'CVSSv3']
-    },
-    {
-        icon: Smartphone, title: 'Mobile Application VAPT', color: '#B45309',
-        short: 'iOS and Android security testing — static, dynamic, and network analysis.',
-        details: 'OWASP MASVS-compliant testing covering insecure data storage, improper auth, code tampering, reverse engineering, traffic interception, and backend API testing.',
-        tags: ['iOS', 'Android', 'OWASP MASVS']
-    },
-    {
-        icon: Code2, title: 'API Security Testing', color: '#F59E0B',
-        short: 'REST, GraphQL, SOAP — full API attack surface coverage.',
-        details: 'Authentication bypass, authorization flaws, excessive data exposure, injection flaws, rate limiting issues, schema validation, and mass assignment vulnerabilities tested systematically.',
-        tags: ['REST', 'GraphQL', 'SOAP', 'gRPC']
-    },
-    {
-        icon: Cloud, title: 'Cloud Security Assessment', color: '#EA580C',
-        short: 'AWS, Azure, GCP misconfiguration review and hardening.',
-        details: 'IAM policy review, S3/Blob/GCS exposure, VPC security, Kubernetes hardening, serverless security, secrets management, logging/monitoring gaps, and CIS benchmark compliance.',
-        tags: ['AWS', 'Azure', 'GCP', 'CIS Benchmark']
-    },
-    {
-        icon: Network, title: 'Network Penetration Testing', color: '#B45309',
-        short: 'Internal and external network penetration testing.',
-        details: 'Network enumeration, service exploitation, man-in-the-middle attacks, firewall bypass, VPN security, segmentation testing, and lateral movement simulation.',
-        tags: ['Internal', 'External', 'Segmentation']
-    },
-    {
-        icon: Wifi, title: 'Wireless Security Assessment', color: '#F59E0B',
-        short: 'Wi-Fi network security testing and rogue AP detection.',
-        details: 'WPA2/WPA3 testing, evil twin attacks, PMKID cracking, captive portal bypasses, enterprise Wi-Fi (802.1x) testing, rogue access point detection.',
-        tags: ['WPA2', 'WPA3', '802.1x']
-    },
-    {
-        icon: Server, title: 'Infrastructure Assessment', color: '#EA580C',
-        short: 'Server hardening review and vulnerability scanning.',
-        details: 'OS hardening, patch management gaps, exposed services, privilege escalation paths, default credentials, configuration drift, and compliance mapping.',
-        tags: ['CIS Benchmark', 'NIST', 'ISO 27001']
-    },
-    {
-        icon: Settings, title: 'Configuration Review', color: '#B45309',
-        short: 'Secure baseline configuration audits for all platforms.',
-        details: 'Firewall rule review, router/switch hardening, database configuration, web server hardening (Apache/Nginx/IIS), application server tuning.',
-        tags: ['Firewall', 'Database', 'Web Server']
-    },
-    {
-        icon: FileCode, title: 'Source Code Review', color: '#F59E0B',
-        short: 'Manual + automated SAST for your entire codebase.',
-        details: 'Line-by-line manual code review combined with automated SAST tooling. Covers hardcoded secrets, SQL injection, crypto issues, dependency vulnerabilities, and logic flaws.',
-        tags: ['SAST', 'DAST', 'SCA']
-    },
-    {
-        icon: Target, title: 'Red Team Assessment', color: '#EA580C',
-        short: 'Full adversary simulation — people, process, technology.',
-        details: 'Multi-vector attack simulation targeting physical, digital, and human elements. MITRE ATT&CK-mapped TTPs, C2 infrastructure, persistence, exfiltration simulation.',
-        tags: ['MITRE ATT&CK', 'APT Simulation', 'C2']
-    },
-    {
-        icon: Mail, title: 'Phishing Simulation', color: '#B45309',
-        short: 'Realistic phishing campaigns to test employee awareness.',
-        details: 'Spear phishing, vishing, smishing campaigns with detailed analytics. Employee click rates, credential harvesting awareness, training recommendations, and repeat testing.',
-        tags: ['Email', 'SMS', 'Voice']
-    },
-    {
-        icon: Shield, title: 'ISO 27001 Readiness', color: '#F59E0B',
-        short: 'Gap assessment and remediation roadmap for ISO 27001.',
-        details: 'Full ISMS gap analysis, risk assessment, policy review, control mapping, and implementation roadmap. Prepare for certification audits with confidence.',
-        tags: ['Gap Analysis', 'Risk Assessment', 'ISMS']
-    },
-    {
-        icon: Lock, title: 'SOC 2 Readiness', color: '#EA580C',
-        short: 'SOC 2 Type I & II preparation and evidence collection.',
-        details: 'Trust Service Criteria mapping, control implementation guidance, evidence collection framework, vendor assessment, and auditor liaison support.',
-        tags: ['Type I', 'Type II', 'TSC']
-    },
-    {
-        icon: CreditCard, title: 'PCI DSS Assessment', color: '#B45309',
-        short: 'Cardholder data environment scoping and compliance.',
-        details: 'CDE scoping, SAQ guidance, network segmentation validation, penetration testing per PCI DSS requirement 11.3, and remediation support.',
-        tags: ['PCI DSS v4.0', 'SAQ', 'QSA']
-    },
-    {
-        icon: Eye, title: 'External Attack Surface', color: '#F59E0B',
-        short: 'Discover your exposed assets before attackers do.',
-        details: 'Subdomain enumeration, exposed services discovery, leaked credentials, dark web monitoring, SSL certificate analysis, and continuous attack surface monitoring.',
-        tags: ['OSINT', 'Recon', 'ASM']
-    },
-    {
-        icon: Database, title: 'Active Directory Review', color: '#EA580C',
-        short: 'AD misconfiguration, privilege escalation, and BloodHound analysis.',
-        details: 'BloodHound/SharpHound enumeration, Kerberoasting, AS-REP roasting, pass-the-hash, DCSync, ACL abuse, GPO misconfigurations, and tier-0 asset protection.',
-        tags: ['BloodHound', 'Kerberos', 'LDAP']
-    },
+const tabs = [
+    { id: 'assessment', label: 'Assessment', icon: Shield, color: '#EA580C' },
+    { id: 'monitoring', label: 'Monitoring', icon: Monitor, color: '#B45309' },
+    { id: 'cloud', label: 'Cloud', icon: Cloud, color: '#F59E0B' },
 ]
 
-function ServiceCard({ service, index }) {
-    const [expanded, setExpanded] = useState(false)
-    const Icon = service.icon
+const services = {
+    assessment: {
+        title: 'Vulnerability Assessment & Penetration Testing',
+        desc: 'Our certified ethical hackers simulate real-world cyberattacks to identify vulnerabilities in your web applications, mobile apps, APIs, and network infrastructure before malicious actors can exploit them.',
+        features: [
+            { label: 'Web Application VAPT', icon: Globe },
+            { label: 'Network Pen Testing', icon: Network },
+            { label: 'Mobile App Security', icon: Smartphone },
+            { label: 'API Security Testing', icon: Code2 },
+            { label: 'Social Engineering', icon: Users },
+            { label: 'Red Team Exercises', icon: Target },
+            { label: 'Source Code Review', icon: Code2 },
+            { label: 'Cloud Config Audit', icon: Cloud },
+        ],
+        cta: 'Get a VAPT Quote',
+        stats: [
+            { value: '47+', label: 'Average Vulnerabilities Found' },
+            { value: '99.7%', label: 'Critical CVEs Patched' },
+            { value: '5 Days', label: 'Report Delivery Time' },
+            { value: '15+', label: 'Certified Testers (OSCP/CEH)' },
+            { value: '98%', label: 'Client Satisfaction' },
+        ],
+    },
+    monitoring: {
+        title: 'SOC as a Service',
+        desc: 'Our 24/7 Security Operations Center acts as an extension of your team, providing continuous monitoring, real-time threat detection, and rapid incident response powered by advanced SIEM technology and AI.',
+        features: [
+            { label: '24/7/365 Monitoring', icon: Monitor },
+            { label: 'SIEM Management', icon: Server },
+            { label: 'Threat Hunting', icon: Search },
+            { label: 'Incident Response', icon: AlertTriangle },
+            { label: 'Log Management', icon: FileWarning },
+            { label: 'Alert Triage', icon: Radar },
+            { label: 'Digital Forensics', icon: Brain },
+            { label: 'Monthly Reports', icon: BarChart3 },
+        ],
+        cta: 'Start SOC Trial',
+        stats: [
+            { value: '< 5 Min', label: 'Mean Time to Detect (MTTD)' },
+            { value: '< 15 Min', label: 'Mean Time to Respond (MTTR)' },
+            { value: '1M+', label: 'Daily Threats Analyzed' },
+            { value: '< 0.01%', label: 'False Positive Rate' },
+            { value: '99.99%', label: 'Uptime Guarantee' },
+        ],
+    },
+    cloud: {
+        title: 'Cloud Security Posture Management',
+        desc: 'Secure your cloud environments across AWS, Azure, and GCP with comprehensive security posture assessments, misconfiguration detection, identity management hardening, and continuous compliance monitoring.',
+        features: [
+            { label: 'AWS Security Review', icon: Cloud },
+            { label: 'Azure Security Center', icon: Shield },
+            { label: 'GCP Security Audit', icon: Lock },
+            { label: 'IAM Hardening', icon: Lock },
+            { label: 'Container Security', icon: Container },
+            { label: 'Kubernetes Security', icon: Server },
+            { label: 'CSPM Automation', icon: Activity },
+            { label: 'DevSecOps Pipeline', icon: GitBranch },
+        ],
+        cta: 'Secure Your Cloud',
+        stats: [
+            { value: '500+', label: 'Cloud Misconfigs Detected' },
+            { value: '1,200+', label: 'Compliance Checks' },
+            { value: '3 Major', label: 'Supported Cloud Platforms' },
+            { value: '85%', label: 'Risk Reduction' },
+            { value: '48 Hours', label: 'Avg Setup Time' },
+        ],
+    },
+}
 
+function StatCard({ stat, color }) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: index * 0.05 }}
-            whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="group relative"
+        <div
+            className="rounded-xl p-4 text-center transition-all hover:scale-[1.02]"
+            style={{ background: `${color}0D`, border: `1px solid ${color}20` }}
         >
-            <div
-                className="glass rounded-2xl p-6 h-full cursor-pointer transition-all duration-300 hover:shadow-lg"
-                style={{
-                    borderColor: expanded ? `${service.color}40` : 'var(--color-border)',
-                    border: '1px solid',
-                }}
-                onClick={() => setExpanded(!expanded)}
-            >
-                {/* Glow effect */}
-                <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{
-                        background: `radial-gradient(circle at 50% 0%, ${service.color}12 0%, transparent 70%)`
-                    }}
-                />
-
-                {/* Icon */}
-                <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300"
-                    style={{ background: `${service.color}18`, border: `1px solid ${service.color}30` }}
-                >
-                    <Icon size={22} style={{ color: service.color }} />
-                </div>
-
-                {/* Title */}
-                <h3 className="font-semibold text-lg mb-2 transition-colors" style={{ color: 'var(--color-text)' }}>
-                    {service.title}
-                </h3>
-
-                {/* Short desc */}
-                <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-text-soft)' }}>{service.short}</p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                    {service.tags.map((tag) => (
-                        <span
-                            key={tag}
-                            className="px-2 py-0.5 rounded text-xs font-semibold"
-                            style={{ background: `${service.color}15`, color: service.color }}
-                        >
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-
-                {/* Expand button */}
-                <button className="flex items-center gap-1 text-xs font-medium transition-colors"
-                    style={{ color: 'var(--color-text-faint)' }}>
-                    <span>{expanded ? 'Show less' : 'Learn more'}</span>
-                    <ChevronDown
-                        size={12}
-                        className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
-                        style={{ color: 'var(--color-primary)' }}
-                    />
-                </button>
-
-                {/* Expanded content */}
-                <AnimatePresence>
-                    {expanded && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                        >
-                            <div className="pt-4 mt-4" style={{ borderTop: '1px solid var(--color-border)' }}>
-                                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-soft)' }}>{service.details}</p>
-                                <a
-                                    href="#contact"
-                                    className="inline-flex items-center gap-2 mt-4 text-sm font-semibold transition-colors"
-                                    style={{ color: service.color }}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    Get a Quote <ChevronDown size={12} className="-rotate-90" />
-                                </a>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-        </motion.div>
+            <div className="text-2xl font-bold mb-1" style={{ color }}>{stat.value}</div>
+            <div className="text-xs leading-tight" style={{ color: 'var(--color-text-soft)' }}>{stat.label}</div>
+        </div>
     )
 }
 
 export default function Services() {
+    const [activeTab, setActiveTab] = useState('assessment')
+    const current = services[activeTab]
+    const color = tabs.find(t => t.id === activeTab)?.color
+
     return (
         <section id="services" className="py-20 md:py-24 relative" style={{ backgroundColor: 'var(--color-bg-soft)' }}>
-            {/* Background */}
             <div className="absolute inset-0 cyber-grid opacity-30" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full blur-3xl pointer-events-none"
                 style={{ background: 'rgba(234, 88, 12, 0.05)' }} />
@@ -223,24 +118,128 @@ export default function Services() {
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full mb-6"
                         style={{ borderColor: 'rgba(234,88,12,0.25)' }}>
                         <Shield size={12} style={{ color: '#EA580C' }} />
-                        <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: 'var(--color-primary-deep)' }}>Security Services</span>
+                        <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: 'var(--color-primary-deep)' }}>Our Security Services</span>
                     </div>
                     <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight" style={{ color: 'var(--color-text)' }}>
-                        Comprehensive Security<br />
-                        <span className="gradient-text">Testing & Compliance</span>
+                        Comprehensive, Enterprise-Grade<br />
+                        <span className="gradient-text">Cybersecurity Solutions</span>
                     </h2>
                     <p className="max-w-2xl mx-auto" style={{ color: 'var(--color-text-soft)' }}>
-                        From web apps to cloud infrastructure, we cover every attack surface
-                        with manual expertise and cutting-edge tooling.
+                        Designed to protect your business from every angle.
                     </p>
                 </motion.div>
 
-                {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {services.map((service, i) => (
-                        <ServiceCard key={service.title} service={service} index={i} />
-                    ))}
+                {/* Tabs */}
+                <div className="flex justify-center gap-2 mb-12">
+                    {tabs.map((tab) => {
+                        const TabIcon = tab.icon
+                        const isActive = activeTab === tab.id
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                                style={isActive
+                                    ? { background: `${tab.color}18`, color: tab.color, border: `1px solid ${tab.color}40` }
+                                    : { background: 'transparent', color: 'var(--color-text-faint)', border: `1px solid var(--color-border)` }
+                                }
+                            >
+                                <TabIcon size={16} />
+                                {tab.label}
+                            </button>
+                        )
+                    })}
                 </div>
+
+                {/* Content */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.35 }}
+                        className="grid lg:grid-cols-2 gap-8 lg:gap-12"
+                    >
+                        {/* Left: Title + Description + Features */}
+                        <div>
+                            <h3 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: 'var(--color-text)' }}>
+                                {current.title}
+                            </h3>
+                            <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--color-text-soft)' }}>
+                                {current.desc}
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-3 mb-8">
+                                {current.features.map((feat, i) => {
+                                    const FeatIcon = feat.icon
+                                    return (
+                                        <motion.div
+                                            key={feat.label}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: i * 0.04 }}
+                                            className="flex items-center gap-2.5"
+                                        >
+                                            <div
+                                                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                                                style={{ background: `${color}15`, border: `1px solid ${color}25` }}
+                                            >
+                                                <FeatIcon size={14} style={{ color }} />
+                                            </div>
+                                            <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>{feat.label}</span>
+                                        </motion.div>
+                                    )
+                                })}
+                            </div>
+
+                            <a
+                                href="/#contact"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white btn-primary transition-shadow"
+                            >
+                                {current.cta} <ArrowRight size={16} />
+                            </a>
+                        </div>
+
+                        {/* Right: Stats */}
+                        <div>
+                            <div className="grid grid-cols-2 gap-3">
+                                {current.stats.map((stat, i) => (
+                                    <motion.div
+                                        key={stat.label}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: i * 0.06 }}
+                                    >
+                                        <StatCard stat={stat} color={color} />
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            {/* Trust badge */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 }}
+                                className="mt-4 glass rounded-xl p-4 flex items-center gap-3"
+                                style={{ borderColor: `${color}25` }}
+                            >
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                                    style={{ background: `${color}15` }}>
+                                    <CheckCircle size={20} style={{ color }} />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>
+                                        Industry-Standard Methodology
+                                    </p>
+                                    <p className="text-xs" style={{ color: 'var(--color-text-soft)' }}>
+                                        OWASP, PTES, NIST, MITRE ATT&CK aligned
+                                    </p>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
             </div>
         </section>
     )

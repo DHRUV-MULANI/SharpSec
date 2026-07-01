@@ -55,7 +55,7 @@ export default function DownloadModal({ onClose }) {
             setTimeout(() => {
                 const link = document.createElement('a')
                 link.href = '/sample-report.pdf'
-                link.download = 'CipherGuard-Sample-Report.pdf'
+                link.download = 'EvoluteSec-Sample-Report.pdf'
                 document.body.appendChild(link)
                 link.click()
                 document.body.removeChild(link)
@@ -63,7 +63,7 @@ export default function DownloadModal({ onClose }) {
             }, 800)
         } catch (err) {
             console.error('EmailJS error:', err)
-            setErrorMsg(err?.text || 'Could not send. Please email security@cipherguard.io')
+            setErrorMsg(err?.text || 'Could not send. Please email security@evolutesec.io')
             setStatus('error')
         }
     }

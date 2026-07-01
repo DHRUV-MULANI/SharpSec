@@ -3,17 +3,15 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
-  server: {
-    allowedHosts: true,
-  },
+  plugins: [react(), tailwindcss()],
+  base: './',
   build: {
-    chunkSizeWarningLimit: 1500,
-  },
-  optimizeDeps: {
-    include: ['three', '@react-three/fiber', '@react-three/drei'],
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
   }
 })

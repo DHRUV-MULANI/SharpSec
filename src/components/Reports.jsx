@@ -208,7 +208,7 @@ function ReportModal({ report, onClose, onDownload }) {
                                     <p className="font-semibold mb-1" style={{ color: 'var(--color-text)' }}>Sample Report Only</p>
                                     <p className="text-sm mb-4" style={{ color: 'var(--color-text-soft)' }}>Request a free consultation to see a full report</p>
                                     <a
-                                        href="#contact"
+                                        href="/#contact"
                                         className="px-4 py-2 text-sm font-semibold rounded-xl text-white inline-block btn-primary"
                                         onClick={onClose}
                                     >
